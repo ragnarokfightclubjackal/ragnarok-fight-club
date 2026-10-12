@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Petarung | Ragnarok Fight Club</title>
+    <!-- Google Fonts: Cinzel & Rajdhani -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #030712; 
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        nav {
+            background-color: rgba(3, 7, 18, 0.95);
+            border-bottom: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #00d2ff;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #00d2ff;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        /* CONTAINER UTAMA */
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .container h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #00d2ff;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
+        .subtitle-page {
+            color: #64748b;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 50px;
+        }
+
+        /* LAYOUT HORIZONTAL KARTU RULES */
+        .rules-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .rule-card {
+            background: linear-gradient(135deg, #080d1a, #0d1527);
+            border: 1px solid #1e293b;
+            border-top: 4px solid #00d2ff;
+            width: 350px;
+            border-radius: 6px;
+            overflow: hidden;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-8px);
+            border-color: #00d2ff;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+        }
+
+        .fighter-photo-box {
+            width: 100%;
+            height: 220px;
+            background-color: #111827;
+            position: relative;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .rule-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .rule-tag {
+            font-size: 0.8rem;
+            color: #00d2ff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .rule-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .rule-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-select-rule {
+            width: 100%;
+            background-color: transparent;
+            color: #00d2ff;
+            border: 2px solid #00d2ff;
+            padding: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-select-rule:hover {
+            background-color: #00d2ff;
+            color: #030712;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+        }
+
+        /* FORMULIR PENDAFTARAN */
+        .form-box {
+            background: #0d1527;
+            border: 1px solid #1e293b;
+            padding: 40px;
+            border-radius: 6px;
+            text-align: left;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #030712;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: #00d2ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+
+        .form-group input[type="file"] {
+            padding: 10px;
+            background-color: #080d1a;
+            cursor: pointer;
+        }
+
+        .selected-badge {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid #00d2ff;
+            color: #00d2ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .payment-info {
+            background: rgba(0, 210, 255, 0.05);
+            border-left: 4px solid #00d2ff;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .payment-info strong {
+            color: #00d2ff;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #0052D4, #4364F7);
+            color: white;
+            border: 2px solid #00d2ff;
+            padding: 14px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
+            background: linear-gradient(135deg, #4364F7, #0052D4);
+        }
+
+        /* OVERLAY MODAL / POPUP TERIMA KASIH */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: linear-gradient(135deg, #080d1a, #0d1527);
+            border: 2px solid #00d2ff;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.4);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #00d2ff;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .modal-box p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn-modal-close {
+            background: linear-gradient(135deg, #0052D4, #4364F7);
+            color: white;
+            border: 2px solid #00d2ff;
+            padding: 10px 25px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-modal-close:hover {
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.7);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+            margin-top: 80px;
+            background-color: #030712;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="index.html" class="nav-brand">RFC ARENA</a>
+        <div class="nav-links">
+            <a href="index.html">Beranda</a>
+            <a href="jadwal.html">Jadwal</a>
+            <a href="daftar-petarung.html" class="active">Daftar Petarung</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Pilih Disiplin Tarung</h2>
+        <div class="subtitle-page">Pilih jalur gladiator dan daftarkan dirimu ke arena Valhalla.</div>
+
+        <!-- 3 KARTU RULES HORIZONTAL -->
+        <div class="rules-grid">
+            
+           <!-- Kartu 1: Boxing -->
+            <div class="rule-card">
+                <div class="fighter-photo-box">
+                    <img src="fotoboxing.jpg" alt="Petarung Boxing" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(130%) brightness(85%) sepia(50%) hue-rotate(180deg);">
+                </div>
+                <div class="rule-content">
+                    <div>
+                        <div class="rule-tag">Combat Rules #01</div>
+                        <h3>Boxing</h3>
+                        <p>Pertarungan tangan kosong penuh taktik, ketahanan mental, dan pukulan sekeras palu Mjolnir.</p>
+                    </div>
+                    <button class="btn-select-rule" onclick="pilihDisiplin('Boxing')">Pilih Boxing</button>
+                </div>
+            </div>
+
+            <!-- Kartu 2: Kickboxing -->
+            <div class="rule-card">
+                <div class="fighter-photo-box">
+                    <img src="fotokickboxing.jpg" alt="Petarung Kickboxing" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(130%) brightness(85%) sepia(50%) hue-rotate(180deg);">
+                </div>
+                <div class="rule-content">
+                    <div>
+                        <div class="rule-tag">Combat Rules #02</div>
+                        <h3>Kickboxing</h3>
+                        <p>Kombinasi badai pukulan dan tendangan kilat yang mematikan. Kuasai tempo pertempuran.</p>
+                    </div>
+                    <button class="btn-select-rule" onclick="pilihDisiplin('Kickboxing')">Pilih Kickboxing</button>
+                </div>
+            </div>
+
+            <!-- Kartu 3: Muay Thai -->
+            <div class="rule-card">
+                <div class="fighter-photo-box">
+                    <img src="fotomuaythai.jpg" alt="Petarung Muay Thai" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(130%) brightness(85%) sepia(50%) hue-rotate(180deg);">
+                </div>
+                <div class="rule-content">
+                    <div>
+                        <div class="rule-tag">Combat Rules #03</div>
+                        <h3>Muay Thai</h3>
+                        <p>Seni Delapan Tungkai. Gunakan siku, lutut, tinju, dan tendangan tulang kering untuk menghancurkan lawan.</p>
+                    </div>
+                    <button class="btn-select-rule" onclick="pilihDisiplin('Muay Thai')">Pilih Muay Thai</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULIR PENDAFTARAN -->
+        <div id="form-pendaftaran" class="form-box">
+            <h3 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #00d2ff; margin-bottom: 15px; letter-spacing: 1px;">Formulir Registrasi</h3>
+            
+            <!-- Indikator disiplin yang diklik di atas -->
+            <div id="selected-rule-display" class="selected-badge">Disiplin Belum Dipilih (Klik tombol di atas)</div>
+
+            <form id="petarung-form" onsubmit="kirimForm(event)">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" placeholder="Contoh: Budi Santoso" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nama-panggung">Nama Panggung / Julukan Ring</label>
+                    <input type="text" id="nama-panggung" name="namaPanggung" placeholder="Contoh: Thorin 'The Hammer'" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Jenis Kelamin</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jurusan">Jurusan / Profesi</label>
+                    <input type="text" id="jurusan" name="jurusan" placeholder="Contoh: Teknik Informatika / Atlet" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="berat">Kelas Berat Badan</label>
+                    <select id="berat" name="berat" required>
+                        <option value="" disabled selected>Pilih Kelas Berat Badan</option>
+                        <option value="Bantamweight (53,3 kg)">(53,3 kg) Bantamweight</option>
+                        <option value="Featherweight (57,6 kg)">(57,6 kg) Featherweight</option>
+                        <option value="Lightweight (63,2 kg)">(63,2 kg) Lightweight</option>
+                        <option value="Welterweight (66,7 kg)">(66,7 kg) Welterweight</option>
+                        <option value="Middleweight (72,60 kg)">(72,60 kg) Middleweight</option>
+                        <option value="Light Heavyweight (79,4 kg)">(79,4 kg) Light Heavyweight</option>
+                        <option value="Heavyweight (90,7+ kg)">(90,7+ kg) Heavyweight</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="rekor">Rekor Pertandingan</label>
+                    <input type="text" id="rekor" name="rekor" placeholder="Contoh: 3 Menang - 0 Kalah (atau 0-0)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="camp">Asal Kampus / Camp</label>
+                    <input type="text" id="camp" name="camp" placeholder="Contoh: Universitas Indonesia / Valhalla Camp" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="kontak">Nomor WhatsApp</label>
+                    <input type="text" id="kontak" name="kontak" placeholder="Contoh: 081234567890" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nik">NIK</label>
+                    <input type="text" id="nik" name="nik" placeholder="Contoh: 3271xxxxxxxxxxxx" required>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 30px 0;">
+
+                <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: #00d2ff; margin-bottom: 20px; letter-spacing: 1px;">Upload Berkas & Bukti</h3>
+
+                <div class="form-group">
+                    <label for="foto-fighter">Pose Foto Fighter</label>
+                    <input type="file" id="foto-fighter" name="fotoFighter" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti-tiktok">Bukti Follow TikTok @rfc.jackal</label>
+                    <input type="file" id="bukti-tiktok" name="buktiTiktok" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti-ig">Bukti Follow Instagram @rfc.jackal</label>
+                    <input type="file" id="bukti-ig" name="buktiIg" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="foto-ktp">Foto KTP (Untuk Keperluan BPJS)</label>
+                    <input type="file" id="foto-ktp" name="fotoKtp" accept="image/*" required>
+                </div>
+
+                <div class="payment-info">
+                    Silakan lakukan transfer pembayaran sebesar <strong>Rp150.000</strong> ke <strong>DANA 089678130210</strong> atas nama <strong>Anggi Virjianti</strong>, lalu upload bukti transfer di bawah ini.
+                </div>
+
+                <div class="form-group">
+                    <label for="bukti-transfer">Foto Bukti Pembayaran (Rp150.000)</label>
+                    <input type="file" id="bukti-transfer" name="buktiTransfer" accept="image/*" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Kirim Pendaftaran Petarung</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- OVERLAY POPUP TERIMA KASIH -->
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Pendaftaran Diterima!</h3>
+            <p>Terima kasih telah mendaftar sebagai gladiator di Ragnarok Fight Club. Data petarungmu telah direkam. Bersiaplah untuk bertarung di arena!</p>
+            <button class="btn-modal-close" onclick="tutupModal()">Kembali ke Arena</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Ragnarok Fight Club (RFC). All Rights Reserved.
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+    let disiplinTerpilih = "";
+
+    function pilihDisiplin(disiplin) {
+        disiplinTerpilih = disiplin;
+        document.getElementById('selected-rule-display').innerText = "Disiplin Terpilih: " + disiplin;
+        document.getElementById('form-pendaftaran').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxKBGhm_CFeY5A2xiqcPG5FhxYkWTXsR2zldJCLeLwtqoOfnhZ9WAjr2dZSBmZ3ztDC/exec";
+
+    // Fungsi helper pembaca file ke Base64
+    function convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve({ base64: "", name: "", type: "" });
+                return;
+            }
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve({
+                base64: reader.result,
+                name: file.name,
+                type: file.type
+            });
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async function kirimForm(event) {
+        event.preventDefault();
+
+        if (!disiplinTerpilih) {
+            alert("Silakan pilih disiplin tarung terlebih dahulu di kartu bagian atas!");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        const submitBtn = document.querySelector('.btn-submit');
+        if(submitBtn) {
+            submitBtn.innerText = "MENGIRIM DATA & FOTO...";
+            submitBtn.disabled = true;
+        }
+
+        try {
+            // Ambil elemen file
+            const fFighter = document.getElementById('foto-fighter').files[0];
+            const fTiktok = document.getElementById('bukti-tiktok').files[0];
+            const fIg = document.getElementById('bukti-ig').files[0];
+            const fKtp = document.getElementById('foto-ktp').files[0];
+            const fTransfer = document.getElementById('bukti-transfer').files[0];
+
+            // Ubah file ke base64 secara asynchronous
+            const [resFighter, resTiktok, resIg, resKtp, resTransfer] = await Promise.all([
+                convertFileToBase64(fFighter),
+                convertFileToBase64(fTiktok),
+                convertFileToBase64(fIg),
+                convertFileToBase64(fKtp),
+                convertFileToBase64(fTransfer)
+            ]);
+
+            // Kumpulkan data JSON
+            const payload = {
+                disiplin: disiplinTerpilih,
+                nama: document.getElementById('nama').value,
+                namaPanggung: document.getElementById('nama-panggung').value,
+                gender: document.getElementById('gender').value,
+                jurusan: document.getElementById('jurusan').value,
+                berat: document.getElementById('berat').value,
+                rekor: document.getElementById('rekor').value,
+                camp: document.getElementById('camp').value,
+                kontak: document.getElementById('kontak').value,
+                nik: document.getElementById('nik').value,
+                
+                fotoFighter: resFighter.base64,
+                fotoFighterName: resFighter.name,
+                fotoFighterType: resFighter.type,
+
+                buktiTiktok: resTiktok.base64,
+                buktiTiktokName: resTiktok.name,
+                buktiTiktokType: resTiktok.type,
+
+                buktiIg: resIg.base64,
+                buktiIgName: resIg.name,
+                buktiIgType: resIg.type,
+
+                fotoKtp: resKtp.base64,
+                fotoKtpName: resKtp.name,
+                fotoKtpType: resKtp.type,
+
+                buktiTransfer: resTransfer.base64,
+                buktiTransferName: resTransfer.name,
+                buktiTransferType: resTransfer.type
+            };
+
+            await fetch(URL_WEB_APP, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if(submitBtn) {
+                submitBtn.innerText = "Kirim Pendaftaran Petarung";
+                submitBtn.disabled = false;
+            }
+            document.getElementById('success-modal').classList.add('active');
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan saat mengirim data. Coba lagi.");
+            if(submitBtn) {
+                submitBtn.innerText = "Kirim Pendaftaran Petarung";
+                submitBtn.disabled = false;
+            }
+        }
+    }
+
+    function tutupModal() {
+        document.getElementById('success-modal').classList.remove('active');
+        document.getElementById('petarung-form').reset();
+        disiplinTerpilih = "";
+        document.getElementById('selected-rule-display').innerText = "Disiplin Belum Dipilih (Klik tombol di atas)";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    </script>
+</body>
+</html>

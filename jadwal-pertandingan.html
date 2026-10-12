@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Pertandingan | Ragnarok Fight Club (RFC)</title>
+    <!-- Google Fonts: Cinzel & Rajdhani -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- FONT LOKAL GODOFWAR --- */
+        @font-face {
+            font-family: 'GodOfWar';
+            src: url('fonts/GODOFWAR.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #030712;
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            padding-top: 100px;
+        }
+
+        /* NAVBAR / NAVIGASI ATAS */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(3, 7, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .nav-logo span {
+            color: #00d2ff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #00d2ff;
+            text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(245, 175, 25, 0.4);
+            display: inline-block;
+        }
+
+        .nav-cta:hover {
+            box-shadow: 0 0 15px rgba(245, 175, 25, 0.8);
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-family: 'GodOfWar', serif;
+            font-size: 3.5rem;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+        }
+
+        .page-desc {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* CONTAINER JADWAL */
+        .schedule-container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 20px 20px 100px 20px;
+        }
+
+        /* KATEGORI LAGA TITLE */
+        .category-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #f5af19;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            margin-top: 20px;
+            text-shadow: 0 0 12px rgba(245, 175, 25, 0.5);
+            border-left: 4px solid #f5af19;
+            padding-left: 15px;
+        }
+
+        /* --- ANIMASI & STYLING MAIN EVENT (TETAP SANGAR) --- */
+        @keyframes fireGlow {
+            0% {
+                box-shadow: 0 0 20px rgba(245, 175, 25, 0.4), inset 0 0 15px rgba(241, 39, 17, 0.3);
+                border-color: #f5af19;
+            }
+            50% {
+                box-shadow: 0 0 45px rgba(241, 39, 17, 0.8), 0 0 15px rgba(245, 175, 25, 0.9), inset 0 0 25px rgba(245, 175, 25, 0.5);
+                border-color: #ff4b2b;
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(245, 175, 25, 0.4), inset 0 0 15px rgba(241, 39, 17, 0.3);
+                border-color: #f5af19;
+            }
+        }
+
+        .fight-card-item.main-event {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(3, 7, 18, 0.98));
+            border: 3px solid #f5af19;
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            animation: fireGlow 3s infinite ease-in-out;
+        }
+
+        .main-event-ribbon {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f12711, #f5af19);
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            font-weight: 900;
+            padding: 6px 30px;
+            border-radius: 30px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(241, 39, 17, 0.8);
+            border: 2px solid #fff;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .main-event .fighter-box {
+            background: linear-gradient(180deg, #0b1329 0%, #050a17 100%);
+            border: 2px solid rgba(0, 210, 255, 0.2);
+            border-radius: 8px;
+            width: 39%;
+            overflow: hidden;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        .main-event .fighter-box:hover {
+            border-color: #00d2ff;
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+        }
+
+        .main-event .fighter-img-wrapper {
+            width: 100%;
+            height: 420px;
+            background: #000;
+            border-bottom: 2px solid rgba(0, 210, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .main-event .fighter-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(10%) contrast(115%);
+        }
+
+        .main-event .fighter-details {
+            padding: 22px 15px;
+            background: radial-gradient(circle at top, rgba(0, 210, 255, 0.08), transparent 70%),
+                        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
+        }
+
+        .main-event .fighter-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .main-event .fighter-name span.icon {
+            font-size: 1.1rem;
+            color: #f5af19;
+            filter: drop-shadow(0 0 5px rgba(245, 175, 25, 0.8));
+        }
+
+        .main-event .divider-line {
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d2ff, transparent);
+            margin: 8px auto 12px auto;
+        }
+
+        .main-event .fighter-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(0, 114, 255, 0.2));
+            color: #00d2ff;
+            padding: 4px 14px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid #00d2ff;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .main-event .fighter-camp {
+            color: #cbd5e1;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .main-event .fighter-record-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(245, 175, 25, 0.5);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 4px;
+        }
+
+        .main-event .fighter-record {
+            color: #f5af19;
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .main-event .vs-info-center {
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .main-event .rules-badge {
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 900;
+            padding: 6px 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(245, 175, 25, 0.6);
+            border: 1px solid #fff;
+        }
+
+        .main-event .vs-text {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #00d2ff;
+            text-shadow: 0 0 25px rgba(0, 210, 255, 0.9);
+            line-height: 1;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .main-event .match-schedule-box {
+            background: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .main-event .match-date {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .main-event .match-time {
+            color: #00d2ff;
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-top: 3px;
+        }
+
+        /* --- STYLING KHUSUS UNDERCARD CARD (RINGKAS & COMPACT) --- */
+        .undercard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .undercard-row {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(3, 7, 18, 0.95));
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 8px;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .undercard-row:hover {
+            border-color: #00d2ff;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(11, 19, 41, 0.95));
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+            transform: translateX(4px);
+        }
+
+        /* PETARUNG SIDE DI UNDERCARD */
+        .uc-fighter {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 38%;
+        }
+
+        .uc-fighter.right {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .uc-avatar {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #00d2ff;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+            flex-shrink: 0;
+            background: #000;
+        }
+
+        .uc-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(10%) contrast(110%);
+        }
+
+        .uc-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .uc-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .uc-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .uc-fighter.right .uc-meta {
+            justify-content: flex-end;
+        }
+
+        .uc-class {
+            color: #00d2ff;
+            font-weight: 700;
+        }
+
+        .uc-record {
+            color: #f5af19;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        /* VS CENTER UNDERCARD */
+        .uc-vs-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 20%;
+            text-align: center;
+        }
+
+        .uc-rules-badge {
+            background: rgba(0, 210, 255, 0.15);
+            color: #00d2ff;
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .uc-vs-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #f5af19;
+            font-style: italic;
+            text-shadow: 0 0 10px rgba(245, 175, 25, 0.6);
+            line-height: 1;
+        }
+
+        .uc-time {
+            font-size: 0.85rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- MOBILE RESPONSIF (HP) --- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 8px;
+                list-style: none;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 4px 0;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+
+            .nav-cta {
+                padding: 4px 10px !important;
+                font-size: 0.8rem !important;
+            }
+
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            /* MAIN EVENT MOBILE */
+            .fight-card-item.main-event {
+                padding: 20px 8px 15px 8px;
+                gap: 4px;
+            }
+
+            .main-event-ribbon {
+                font-size: 0.7rem;
+                padding: 4px 15px;
+                top: -12px;
+            }
+
+            .main-event .fighter-box {
+                width: 38%;
+            }
+
+            .main-event .fighter-img-wrapper {
+                height: 170px;
+            }
+
+            .main-event .fighter-details {
+                padding: 8px 4px;
+            }
+
+            .main-event .fighter-name {
+                font-size: 0.85rem;
+                margin-bottom: 2px;
+                gap: 2px;
+            }
+
+            .main-event .fighter-name span.icon {
+                font-size: 0.75rem;
+            }
+
+            .main-event .divider-line {
+                width: 80%;
+                margin: 4px auto;
+            }
+
+            .main-event .fighter-badge {
+                font-size: 0.6rem;
+                padding: 2px 4px;
+                margin-bottom: 4px;
+            }
+
+            .main-event .fighter-camp {
+                font-size: 0.65rem;
+                margin-bottom: 4px;
+            }
+
+            .main-event .fighter-record-box {
+                padding: 3px 6px;
+            }
+
+            .main-event .fighter-record {
+                font-size: 0.65rem;
+            }
+
+            .main-event .vs-info-center {
+                width: 24%;
+                padding: 0 2px;
+            }
+
+            .main-event .rules-badge {
+                font-size: 0.6rem;
+                padding: 3px 6px;
+                margin-bottom: 8px;
+            }
+
+            .main-event .vs-text {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            .main-event .match-schedule-box {
+                padding: 4px 6px;
+            }
+
+            .main-event .match-date {
+                font-size: 0.6rem;
+            }
+
+            .main-event .match-time {
+                font-size: 0.7rem;
+            }
+
+            /* UNDERCARD MOBILE */
+            .undercard-row {
+                padding: 10px 8px;
+            }
+
+            .uc-fighter {
+                gap: 8px;
+                width: 39%;
+            }
+
+            .uc-avatar {
+                width: 50px;
+                height: 50px;
+            }
+
+            .uc-name {
+                font-size: 0.9rem;
+            }
+
+            .uc-meta {
+                font-size: 0.7rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+            }
+
+            .uc-fighter.right .uc-meta {
+                align-items: flex-end;
+            }
+
+            .uc-record {
+                font-size: 0.7rem;
+            }
+
+            .uc-vs-center {
+                width: 22%;
+            }
+
+            .uc-rules-badge {
+                font-size: 0.6rem;
+                padding: 1px 5px;
+            }
+
+            .uc-vs-text {
+                font-size: 1.3rem;
+            }
+
+            .uc-time {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="index.html" class="nav-logo">RFC <span>ARENA</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="jadwal-pertandingan.html" class="active">Jadwal</a></li>
+            <li><a href="petarung.html">Petarung</a></li>
+            <li><a href="beli-tiket.html" class="nav-cta">Beli Tiket</a></li>
+        </ul>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <h1 class="page-title">JADWAL PERTANDINGAN</h1>
+        <p class="page-desc">Jadwal Resmi Laga Bintang & Pembuktian Gladiator RFC</p>
+    </div>
+
+    <div class="schedule-container">
+
+        <!-- CATEGORY 1: MAIN EVENT (DESIGN TETAP MEGAH & SANGAR) -->
+        <h2 class="category-title">🔥 Main Event (Pertandingan Puncak)</h2>
+
+        <div class="fight-card-item main-event">
+            <div class="main-event-ribbon">🏆 MAIN EVENT 🏆</div>
+
+            <!-- Petarung 1 -->
+            <div class="fighter-box">
+                <div class="fighter-img-wrapper">
+                    <img src="foto/akmalfighter.jpeg" alt="Fighter 1" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="fighter-details">
+                    <h3 class="fighter-name"><span class="icon">⚔️</span> AKMAL <span class="icon">⚔️</span></h3>
+                    <div class="divider-line"></div>
+                    <span class="fighter-badge">Lightweight</span>
+                    <p class="fighter-camp">CAMP: HUKUM</p>
+                    <div class="fighter-record-box">
+                        <p class="fighter-record">Rekor: 5-0 (4 KO)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VS & Schedule Center -->
+            <div class="vs-info-center">
+                <span class="rules-badge">Boxing Rules</span>
+                <div class="vs-text">VS</div>
+                <div class="match-schedule-box">
+                    <div class="match-date">Sabtu, 24 Okt</div>
+                    <div class="match-time">21.00 WIB</div>
+                </div>
+            </div>
+
+            <!-- Petarung 2 -->
+            <div class="fighter-box">
+                <div class="fighter-img-wrapper">
+                    <img src="foto/fadel.jpeg" alt="Fighter 2" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="fighter-details">
+                    <h3 class="fighter-name"><span class="icon">⚔️</span> FADEL <span class="icon">⚔️</span></h3>
+                    <div class="divider-line"></div>
+                    <span class="fighter-badge">Lightweight</span>
+                    <p class="fighter-camp">CAMP: EKONOMI</p>
+                    <div class="fighter-record-box">
+                        <p class="fighter-record">Rekor: 6-0 (5 KO)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- CATEGORY 2: UNDERCARD FIGHTS (DESIGN RINGKAS & MUAT BANYAK) -->
+        <h2 class="category-title">⚡ Undercard Fights (Laga Pendukung)</h2>
+
+        <div class="undercard-container">
+
+            <!-- LAGA UNDERCARD 1 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">BIMA</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Teknik</span>
+                        </div>
+                        <p class="uc-record">4-1 (2 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">20.00 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ZIKRI</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: FKIP</span>
+                        </div>
+                        <p class="uc-record">3-1 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAGA UNDERCARD 2 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">SATRIA</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| Camp: Kedokteran</span>
+                        </div>
+                        <p class="uc-record">2-2 (1 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Muay Thai</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">19.15 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">DONI</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| Camp: FISIP</span>
+                        </div>
+                        <p class="uc-record">2-3 (0 KO)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAGA UNDERCARD 3 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">RIKI</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightweight</span>
+                            <span>| Camp: Pertanian</span>
+                        </div>
+                        <p class="uc-record">1-2 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Boxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">18.30 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">BAYU</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightweight</span>
+                            <span>| Camp: MIPA</span>
+                        </div>
+                        <p class="uc-record">2-2 (1 KO)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAGA UNDERCARD 4 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">ARIF</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Sastra</span>
+                        </div>
+                        <p class="uc-record">1-3 (0 KO)</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">Kickboxing</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.45 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">GIBRAN</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| Camp: Psikologi</span>
+                        </div>
+                        <p class="uc-record">3-0 (2 KO)</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

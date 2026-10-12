@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Tiket Masuk | Ragnarok Fight Club</title>
+    <!-- Google Fonts: Cinzel & Rajdhani -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #030712; 
+            color: #e2e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* NAVBAR KECIL */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+            z-index: 1000;
+        }
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+        .nav-logo span { color: #00d2ff; }
+        .btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1 !important;
+            border: 1px solid #334155;
+            padding: 6px 15px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.15); border-color: #94a3b8; }
+
+        /* CHECK-IN CARD */
+        .check-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(3, 7, 18, 0.98));
+            border: 2px solid rgba(0, 210, 255, 0.4);
+            border-radius: 10px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.15);
+            margin-top: 60px;
+        }
+
+        .check-card h2 {
+            font-family: 'Cinzel', serif;
+            color: #00d2ff;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .check-card p {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-code {
+            width: 100%;
+            background: #0b1329;
+            border: 2px solid #1e293b;
+            padding: 15px;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            text-align: center;
+            letter-spacing: 8px;
+            border-radius: 6px;
+        }
+
+        .input-code:focus {
+            outline: none;
+            border-color: #00d2ff;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+
+        .btn-verify {
+            width: 100%;
+            background: linear-gradient(135deg, #0052D4, #4364F7);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn-verify:hover {
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* CUSTOM POPUP MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: linear-gradient(145deg, #0f172a, #030712);
+            border: 3px solid #1e293b;
+            border-radius: 12px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-message {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .modal-subtext {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-close-modal {
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-close-modal:hover { background: #334155; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="admin-tiket.html" class="nav-logo">RFC <span>TICKETING</span></a>
+        <a href="admin-tiket.html" class="btn-back">← Kembali ke Dashboard</a>
+    </nav>
+
+    <!-- KOTAK UTAMA -->
+    <div class="check-card">
+        <h2>Gate Check-In Tiket</h2>
+        <p>Masukkan 4 Digit Kode Terakhir Penonton</p>
+        
+        <div class="input-group">
+            <input type="text" id="kode-input" class="input-code" maxlength="4" placeholder="0000" autocomplete="off" autofocus>
+        </div>
+
+        <button onclick="prosesCekTiket()" class="btn-verify" id="btn-submit">Verifikasi Tiket</button>
+    </div>
+
+    <!-- CUSTOM POPUP MODAL -->
+    <div class="modal-overlay" id="popup-modal">
+        <div class="modal-box" id="modal-box-border">
+            <div class="modal-title" id="modal-title">STATUS TIKET</div>
+            <div class="modal-message" id="modal-message">Pesan status di sini...</div>
+            <div class="modal-subtext" id="modal-subtext">Nama Penonton</div>
+            <button onclick="tutupModal()" class="btn-close-modal">OK / Lanjut</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // PASTE URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI:
+        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwUVs1oMee7KhKtbz_9XFITFLr3NWOB5TCGebITyyeMJvEUCWXiPTM9adcm1jDf9pLG/exec";
+
+        // Shortcut tekan Enter langsung verifikasi
+        document.getElementById('kode-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                prosesCekTiket();
+            }
+        });
+
+        async function prosesCekTiket() {
+            const kode = document.getElementById('kode-input').value.trim();
+            if (kode.length !== 4) {
+                tampilkanModal("PERHATIAN", "Masukkan tepat 4 digit angka terakhir kode tiket!", "Format tidak lengkap", "#f5af19", "#f5af19");
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = "MEMERIKSA...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(URL_WEB_APP, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: "cekTiket", kode: kode })
+                });
+                const res = await response.json();
+
+                if (res.result === "success") {
+                    // BERHASIL (Warna Biru)
+                    tampilkanModal(
+                        "BERHASIL ✅", 
+                        res.message, 
+                        `Penonton: ${res.data.nama} (${res.data.kodeTiket})`, 
+                        "#00d2ff", 
+                        "#00d2ff"
+                    );
+                } else if (res.result === "already_used") {
+                    // SUDAH TERPAKAI (Warna Merah)
+                    tampilkanModal(
+                        "GAGAL ❌", 
+                        res.message, 
+                        `Tiket atas nama "${res.data.nama}" sudah pernah digunakan sebelumnya!`, 
+                        "#ff4b2b", 
+                        "#ff4b2b"
+                    );
+                } else {
+                    // TIDAK VALID / TIDAK ADA (Warna Kuning)
+                    tampilkanModal(
+                        "TIDAK VALID ⚠️", 
+                        res.message, 
+                        "Pastikan 4 digit angka yang dimasukkan benar.", 
+                        "#f5af19", 
+                        "#f5af19"
+                    );
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                tampilkanModal("ERROR 🚨", "Terjadi kesalahan koneksi ke server.", "Coba beberapa saat lagi.", "#ff4b2b", "#ff4b2b");
+            } finally {
+                btn.innerText = "Verifikasi Tiket";
+                btn.disabled = false;
+                document.getElementById('kode-input').value = "";
+                document.getElementById('kode-input').focus();
+            }
+        }
+
+        function tampilkanModal(title, message, subtext, titleColor, borderColor) {
+            const modal = document.getElementById('popup-modal');
+            const box = document.getElementById('modal-box-border');
+            const elTitle = document.getElementById('modal-title');
+            const elMsg = document.getElementById('modal-message');
+            const elSub = document.getElementById('modal-subtext');
+
+            elTitle.innerText = title;
+            elTitle.style.color = titleColor;
+            
+            elMsg.innerText = message;
+            elMsg.style.color = titleColor; // Pesan mengikuti warna tema
+
+            elSub.innerText = subtext;
+            box.style.borderColor = borderColor;
+
+            modal.classList.add('active');
+        }
+
+        function tutupModal() {
+            const modal = document.getElementById('popup-modal');
+            modal.classList.remove('active');
+            document.getElementById('kode-input').focus();
+        }
+    </script>
+</body>
+</html>
