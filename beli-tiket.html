@@ -7,6 +7,12 @@
     <!-- Google Fonts: Cinzel & Rajdhani -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+    font-family: 'GodOfWar';
+    src: url('fonts/GODOFWAR.TTF') format('truetype');
+    font-family: 'nordic';
+    src: url('fonts/nordic.TTF') format('truetype');
+        }
         * {
             margin: 0;
             padding: 0;
@@ -177,6 +183,76 @@
             text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
         }
 
+        .btn-qris {
+            background: linear-gradient(135deg, #f5af19, #f2709c);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 0 12px rgba(245, 175, 25, 0.4);
+            transition: 0.3s;
+        }
+        .btn-qris:hover {
+            box-shadow: 0 0 20px rgba(245, 175, 25, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* MODAL QRIS */
+        .modal-qris {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-qris-content {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(3, 7, 18, 1));
+            border: 2px solid #00d2ff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
+            position: relative;
+        }
+        .modal-qris-content h3 {
+            font-family: 'Cinzel', serif;
+            color: #00d2ff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .modal-qris-content img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 6px;
+            border: 2px solid #1e293b;
+            margin-bottom: 20px;
+        }
+        .btn-close-modal {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
         /* Form Card */
         .ticket-form-card {
             background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(3, 7, 18, 0.95));
@@ -256,6 +332,12 @@
             transform: translateY(-2px);
         }
 
+        .price-tag-qris {
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
         /* Responsif Navbar Mobile */
         @media (max-width: 768px) {
             nav {
@@ -304,13 +386,19 @@
         <h2 class="section-title">Pendaftaran Tiket Nonton</h2>
         <p class="section-desc">Amankan Kursi Anda di Arena Es & Baja Ragnarok Fight Club</p>
 
-        <!-- Informasi Pembayaran DANA -->
+        <!-- Informasi Pembayaran DANA & QRIS -->
         <div class="payment-box">
             <h3>Instruksi Pembayaran</h3>
             <p class="payment-detail">Silakan transfer pembayaran melalui akun <span>DANA</span></p>
             <p class="payment-detail">Nomor DANA: <span>089678130210</span></p>
             <p class="payment-detail">Atas Nama: <span>Anggi Virjianti</span></p>
             <div class="price-tag">Rp 30.000</div>
+            
+            <!-- Tombol Tampil QRIS -->
+            <div>
+                <div class="price-tag-qris">Pembayaran Melalui QRIS</div>
+                <button class="btn-qris" onclick="bukaModalQris()">FOTO QRIS</button>
+            </div>
         </div>
 
         <!-- Form Form -->
@@ -338,9 +426,28 @@
         </div>
     </section>
 
-    <!-- SCRIPT JAVASCRIPT UNTUK KIRIM DATA KE GOOGLE APPS SCRIPT -->
+    <!-- MODAL POPUP QRIS -->
+    <div id="qrisModal" class="modal-qris">
+        <div class="modal-qris-content">
+            <h3>QRIS Pembayaran Tiket RFC</h3>
+            <img src="foto/qris.jpeg" alt="QRIS RFC">
+            <div>
+                <button class="btn-close-modal" onclick="tutupModalQris()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT JAVASCRIPT -->
     <script>
         const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwUVs1oMee7KhKtbz_9XFITFLr3NWOB5TCGebITyyeMJvEUCWXiPTM9adcm1jDf9pLG/exec";
+
+        function bukaModalQris() {
+            document.getElementById('qrisModal').style.display = 'flex';
+        }
+
+        function tutupModalQris() {
+            document.getElementById('qrisModal').style.display = 'none';
+        }
 
         function convertFileToBase64(file) {
             return new Promise((resolve, reject) => {
