@@ -6,6 +6,9 @@
     <title>Cek Tiket Masuk | Ragnarok Fight Club</title>
     <!-- Google Fonts: Cinzel & Rajdhani -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Library QR Code Scanner (Gratis/Open Source) -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -86,8 +89,41 @@
         .check-card p {
             color: #94a3b8;
             font-size: 1rem;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-transform: uppercase;
+        }
+
+        /* KAMERA SCANNER AREA */
+        #reader-wrapper {
+            display: none;
+            margin-bottom: 20px;
+            border: 2px dashed #00d2ff;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+        #reader {
+            width: 100%;
+        }
+
+        .btn-scan-toggle {
+            width: 100%;
+            background: rgba(0, 210, 255, 0.1);
+            color: #00d2ff;
+            border: 1px solid #00d2ff;
+            padding: 12px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-scan-toggle:hover {
+            background: rgba(0, 210, 255, 0.25);
         }
 
         .input-group {
@@ -223,8 +259,16 @@
     <!-- KOTAK UTAMA -->
     <div class="check-card">
         <h2>Gate Check-In Tiket</h2>
-        <p>Masukkan 4 Digit Kode Terakhir Penonton</p>
-        
+        <p>Scan QR Code atau Ketik 4 Digit Kode Tiket</p>
+
+        <!-- TOMBOL BUKA/TUTUP KAMERA SCANNER -->
+        <button id="btn-toggle-camera" onclick="toggleScanner()" class="btn-scan-toggle">📷 Buka Kamera Scan QR</button>
+
+        <!-- CONTAINER PREVIEW KAMERA -->
+        <div id="reader-wrapper">
+            <div id="reader"></div>
+        </div>
+
         <div class="input-group">
             <input type="text" id="kode-input" class="input-code" maxlength="4" placeholder="0000" autocomplete="off" autofocus>
         </div>
@@ -244,8 +288,10 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // PASTE URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI:
         const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwUVs1oMee7KhKtbz_9XFITFLr3NWOB5TCGebITyyeMJvEUCWXiPTM9adcm1jDf9pLG/exec";
+
+        let html5QrCode = null;
+        let isScanning = false;
 
         // Shortcut tekan Enter langsung verifikasi
         document.getElementById('kode-input').addEventListener('keypress', function (e) {
@@ -253,6 +299,65 @@
                 prosesCekTiket();
             }
         });
+
+        // KONTROL KAMERA SCANNER
+        async function toggleScanner() {
+            const wrapper = document.getElementById('reader-wrapper');
+            const btnToggle = document.getElementById('btn-toggle-camera');
+
+            if (isScanning) {
+                // Matikan Kamera
+                if (html5QrCode) {
+                    await html5QrCode.stop();
+                }
+                wrapper.style.display = "none";
+                btnToggle.innerText = "📷 Buka Kamera Scan QR";
+                btnToggle.style.borderColor = "#00d2ff";
+                btnToggle.style.color = "#00d2ff";
+                isScanning = false;
+            } else {
+                // Buka Kamera
+                wrapper.style.display = "block";
+                btnToggle.innerText = "❌ Tutup Kamera";
+                btnToggle.style.borderColor = "#ff4b2b";
+                btnToggle.style.color = "#ff4b2b";
+
+                html5QrCode = new Html5Qrcode("reader");
+                const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+
+                try {
+                    await html5QrCode.start(
+                        { facingMode: "environment" }, // Pakai kamera belakang HP
+                        config,
+                        onScanSuccess
+                    );
+                    isScanning = true;
+                } catch (err) {
+                    console.error("Gagal membuka kamera:", err);
+                    alert("Gagal membuka kamera. Pastikan izin kamera sudah diberikan di browser!");
+                    toggleScanner();
+                }
+            }
+        }
+
+        // KETIKA QR CODE BERHASIL TERBACAM LEWAT KAMERA
+        function onScanSuccess(decodedText, decodedResult) {
+            // Mengambil 4 digit angka terakhir dari teks/link QR Code
+            const cleanedText = decodedText.trim();
+            const last4Digits = cleanedText.slice(-4);
+
+            if (last4Digits && last4Digits.length === 4) {
+                document.getElementById('kode-input').value = last4Digits;
+                
+                // Berikan getaran pendek di HP jika didukung
+                if (navigator.vibrate) navigator.vibrate(100);
+
+                // Langsung jalankan proses cek tiket
+                prosesCekTiket();
+            } else {
+                tampilkanModal("TIDAK VALID ⚠️", "Format QR Code tidak dikenali!", "Kode tidak mengandung 4 digit angka.", "#f5af19", "#f5af19");
+            }
+        }
 
         async function prosesCekTiket() {
             const kode = document.getElementById('kode-input').value.trim();
@@ -309,7 +414,6 @@
                 btn.innerText = "Verifikasi Tiket";
                 btn.disabled = false;
                 document.getElementById('kode-input').value = "";
-                document.getElementById('kode-input').focus();
             }
         }
 
@@ -324,7 +428,7 @@
             elTitle.style.color = titleColor;
             
             elMsg.innerText = message;
-            elMsg.style.color = titleColor; // Pesan mengikuti warna tema
+            elMsg.style.color = titleColor;
 
             elSub.innerText = subtext;
             box.style.borderColor = borderColor;

@@ -786,7 +786,13 @@
                         formattedHp = '62' + formattedHp;
                     }
 
-                    const pesan = `Halo Kak *${nama}*, pembayaran tiket RFC (Ragnarok Fight Club) Anda sudah diverifikasi dan di-approve oleh Admin! 🎉\n\nBerikut adalah Kode Tiket Anda:\n🔑 *${officialKode}*\n\nTunjukkan kode unik ini saat memasuki venue acara ya. Sampai jumpa di arena es & baja! 🥊🔥`;
+                    // Mengambil 4 digit terakhir dari kode tiket resmi
+const last4 = officialKode.slice(-4);
+
+// Link API QR Code gratis yang memuat 4 digit angka terakhir kode tiket
+const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(last4)}`;
+
+const pesan = `Halo Kak *${nama}*, pembayaran tiket RFC (Ragnarok Fight Club) Anda telah diverifikasi & di-approve! 🎉\n\n🔑 *Kode Tiket Unik:* ${officialKode}\n\n📱 *QR Code Tiket Anda:* \n${qrUrl}\n\nTunjukkan QR Code atau 4 digit kode tiket di atas ke petugas gate saat masuk venue ya. Sampai jumpa di arena! 🥊🔥`;
                     const waUrl = `https://wa.me/${formattedHp}?text=${encodeURIComponent(pesan)}`;
                     window.open(waUrl, '_blank');
                     alert("Tiket berhasil di-approve! Tab WhatsApp pengiriman pesan ke pembeli telah dibuka.");
