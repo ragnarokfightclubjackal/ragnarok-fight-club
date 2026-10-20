@@ -341,23 +341,29 @@
         }
 
         // KETIKA QR CODE BERHASIL TERBACAM LEWAT KAMERA
-        function onScanSuccess(decodedText, decodedResult) {
-            // Mengambil 4 digit angka terakhir dari teks/link QR Code
-            const cleanedText = decodedText.trim();
-            const last4Digits = cleanedText.slice(-4);
+        // KETIKA QR CODE BERHASIL TERBACA LEWAT KAMERA
+function onScanSuccess(decodedText, decodedResult) {
+    // Mengambil 4 digit angka terakhir dari teks/link QR Code
+    const cleanedText = decodedText.trim();
+    const last4Digits = cleanedText.slice(-4);
 
-            if (last4Digits && last4Digits.length === 4) {
-                document.getElementById('kode-input').value = last4Digits;
-                
-                // Berikan getaran pendek di HP jika didukung
-                if (navigator.vibrate) navigator.vibrate(100);
-
-                // Langsung jalankan proses cek tiket
-                prosesCekTiket();
-            } else {
-                tampilkanModal("TIDAK VALID ⚠️", "Format QR Code tidak dikenali!", "Kode tidak mengandung 4 digit angka.", "#f5af19", "#f5af19");
-            }
+    if (last4Digits && last4Digits.length === 4) {
+        document.getElementById('kode-input').value = last4Digits;
+        
+        // 1. LANGSUNG MATIKAN KAMERA DULUAN AGAR TIDAK SCAN ULANG DI BACKGROUND!
+        if (isScanning) {
+            toggleScanner();
         }
+
+        // Berikan getaran pendek di HP jika didukung
+        if (navigator.vibrate) navigator.vibrate(100);
+
+        // 2. BARU PROSES CEK TIKET KE DATABASE
+        prosesCekTiket();
+    } else {
+        tampilkanModal("TIDAK VALID ⚠️", "Format QR Code tidak dikenali!", "Kode tidak mengandung 4 digit angka.", "#f5af19", "#f5af19");
+    }
+}
 
         async function prosesCekTiket() {
             const kode = document.getElementById('kode-input').value.trim();
