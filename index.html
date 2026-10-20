@@ -1000,6 +1000,23 @@
     </section>
 
     <!-- AUTOMATIC SCROLL TO CHAMPION FOR MOBILE VIEW -->
+    <script>
+    window.addEventListener('load', function() {
+        if (window.innerWidth <= 768) {
+            // Cari kartu Rank 1
+            const champCard = document.querySelector('.champ-card-1');
+            if (champCard) {
+                const container = champCard.parentElement; // Kontainer pembungkus slider
+                // Hitung posisi tengah kartu di dalam kontainer slider saja
+                const cardOffsetLeft = champCard.offsetLeft;
+                const cardWidth = champCard.offsetWidth;
+                const containerWidth = container.offsetWidth;
 
+                // Geser scroll horizontal slidernya saja tanpa mengganggu scroll utama halaman
+                container.scrollLeft = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+            }
+        }
+    });
+</script>
 </body>
 </html>
