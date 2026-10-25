@@ -439,69 +439,81 @@
 
     <!-- SCRIPT JAVASCRIPT -->
     <script>
-        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwUVs1oMee7KhKtbz_9XFITFLr3NWOB5TCGebITyyeMJvEUCWXiPTM9adcm1jDf9pLG/exec";
+    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwVJ9qli2AaPTvDfx2OAnmGkHKcTlDH9M6J0S42DOKPt6WMjiUdDnD0TW2ZH_5uW8ed/exec";
 
-        function bukaModalQris() {
-            document.getElementById('qrisModal').style.display = 'flex';
-        }
+    function bukaModalQris() {
+        document.getElementById('qrisModal').style.display = 'flex';
+    }
 
-        function tutupModalQris() {
-            document.getElementById('qrisModal').style.display = 'none';
-        }
+    function tutupModalQris() {
+        document.getElementById('qrisModal').style.display = 'none';
+    }
 
-        function convertFileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                if (!file) {
-                    resolve({ base64: "", name: "", type: "" });
-                    return;
-                }
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve({
-                    base64: reader.result,
-                    name: file.name,
-                    type: file.type
-                });
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        document.querySelector('form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.querySelector('.btn-submit');
-            submitBtn.innerText = "MENGIRIM BUKTI PEMBAYARAN...";
-            submitBtn.disabled = true;
-
-            try {
-                const fileInput = document.getElementById('bukti_transfer').files[0];
-                const fileData = await convertFileToBase64(fileInput);
-
-                const payload = {
-                    nama: document.getElementById('nama').value,
-                    no_hp: document.getElementById('no_hp').value,
-                    buktiTransfer: fileData.base64,
-                    buktiTransferName: fileData.name,
-                    buktiTransferType: fileData.type
-                };
-
-                await fetch(URL_WEB_APP, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
-
-                alert("Pendaftaran tiket berhasil dikirim! Silakan tunggu konfirmasi admin.");
-                location.reload();
-
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Terjadi kesalahan pengiriman. Silakan coba lagi.");
-                submitBtn.innerText = "Kirim Bukti & Ambil Tiket";
-                submitBtn.disabled = false;
+    function convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve({ base64: "", name: "", type: "" });
+                return;
             }
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve({
+                base64: reader.result,
+                name: file.name,
+                type: file.type
+            });
+            reader.onerror = error => reject(error);
         });
-    </script>
+    }
+
+    document.querySelector('form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.querySelector('.btn-submit');
+        const fileInput = document.getElementById('bukti_transfer').files[0];
+
+        // --- VALIDASI MAKSIMAL UKURAN FILE (2 MB) ---
+        if (fileInput) {
+            const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB
+            
+            if (fileInput.size > maxSizeInBytes) {
+                alert("Ukuran file terlalu besar! Maksimal ukuran file adalah 2 MB.");
+                return; // Batalkan pengiriman
+            }
+        }
+        // -------------------------------------------
+
+        submitBtn.innerText = "MENGIRIM BUKTI PEMBAYARAN...";
+        submitBtn.disabled = true;
+
+        try {
+            const fileData = await convertFileToBase64(fileInput);
+
+            const payload = {
+                nama: document.getElementById('nama').value,
+                no_hp: document.getElementById('no_hp').value,
+                buktiTransfer: fileData.base64,
+                buktiTransferName: fileData.name,
+                buktiTransferType: fileData.type
+            };
+
+            await fetch(URL_WEB_APP, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+
+            alert("Pendaftaran tiket berhasil dikirim! Silakan tunggu konfirmasi admin.");
+            location.reload();
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan pengiriman. Silakan coba lagi.");
+            submitBtn.innerText = "Kirim Bukti & Ambil Tiket";
+            submitBtn.disabled = false;
+        }
+    });
+</script>
 </body>
 </html>
