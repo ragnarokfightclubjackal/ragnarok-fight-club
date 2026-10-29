@@ -6,8 +6,6 @@
     <title>Jadwal Pertandingan | Ragnarok Fight Club (RFC)</title>
     <!-- Google Fonts: Cinzel & Rajdhani -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 Icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* --- FONT LOKAL GODOFWAR --- */
         @font-face {
@@ -93,6 +91,10 @@
             display: inline-block;
         }
 
+        .nav-cta:hover {
+            box-shadow: 0 0 15px rgba(245, 175, 25, 0.8);
+        }
+
         /* PAGE HEADER */
         .page-header {
             text-align: center;
@@ -124,6 +126,7 @@
             padding: 20px 20px 100px 20px;
         }
 
+        /* KATEGORI LAGA TITLE */
         .category-title {
             font-family: 'Cinzel', serif;
             font-size: 1.8rem;
@@ -137,11 +140,20 @@
             padding-left: 15px;
         }
 
-        /* --- MAIN EVENT (TETAP) --- */
+        /* --- ANIMASI & STYLING MAIN EVENT (TETAP SANGAR) --- */
         @keyframes fireGlow {
-            0% { box-shadow: 0 0 20px rgba(245, 175, 25, 0.4), inset 0 0 15px rgba(241, 39, 17, 0.3); border-color: #f5af19; }
-            50% { box-shadow: 0 0 45px rgba(241, 39, 17, 0.8), 0 0 15px rgba(245, 175, 25, 0.9); border-color: #ff4b2b; }
-            100% { box-shadow: 0 0 20px rgba(245, 175, 25, 0.4), inset 0 0 15px rgba(241, 39, 17, 0.3); border-color: #f5af19; }
+            0% {
+                box-shadow: 0 0 20px rgba(245, 175, 25, 0.4), inset 0 0 15px rgba(241, 39, 17, 0.3);
+                border-color: #f5af19;
+            }
+            50% {
+                box-shadow: 0 0 45px rgba(241, 39, 17, 0.8), 0 0 15px rgba(245, 175, 25, 0.9), inset 0 0 25px rgba(245, 175, 25, 0.5);
+                border-color: #ff4b2b;
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(245, 175, 25, 0.4), inset 0 0 15px rgba(241, 39, 17, 0.3);
+                border-color: #f5af19;
+            }
         }
 
         .fight-card-item.main-event {
@@ -159,150 +171,216 @@
 
         .main-event-ribbon {
             position: absolute;
-            top: -16px; left: 50%; transform: translateX(-50%);
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
             background: linear-gradient(135deg, #f12711, #f5af19);
-            color: #ffffff; font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 900;
-            padding: 6px 30px; border-radius: 30px; letter-spacing: 3px; text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(241, 39, 17, 0.8); border: 2px solid #fff; z-index: 10; white-space: nowrap;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            font-weight: 900;
+            padding: 6px 30px;
+            border-radius: 30px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(241, 39, 17, 0.8);
+            border: 2px solid #fff;
+            z-index: 10;
+            white-space: nowrap;
         }
 
         .main-event .fighter-box {
             background: linear-gradient(180deg, #0b1329 0%, #050a17 100%);
-            border: 2px solid rgba(0, 210, 255, 0.2); border-radius: 8px; width: 39%; overflow: hidden; text-align: center;
+            border: 2px solid rgba(0, 210, 255, 0.2);
+            border-radius: 8px;
+            width: 39%;
+            overflow: hidden;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
         }
 
-        .main-event .fighter-img-wrapper { width: 100%; height: 420px; background: #000; border-bottom: 2px solid rgba(0, 210, 255, 0.3); overflow: hidden; }
-        .main-event .fighter-img-wrapper img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(10%) contrast(115%); }
-        .main-event .fighter-details { padding: 22px 15px; }
-        .main-event .fighter-name { font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 900; color: #ffffff; margin-bottom: 8px; }
-        .main-event .divider-line { width: 60%; height: 2px; background: linear-gradient(90deg, transparent, #00d2ff, transparent); margin: 8px auto 12px auto; }
-        .main-event .fighter-badge { display: inline-block; background: rgba(0, 210, 255, 0.2); color: #00d2ff; padding: 4px 14px; font-size: 0.9rem; font-weight: 900; border: 1px solid #00d2ff; margin-bottom: 10px; border-radius: 3px; }
-        .main-event .fighter-camp { color: #cbd5e1; font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-        .main-event .fighter-record-box { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(245, 175, 25, 0.5); display: inline-block; padding: 6px 16px; border-radius: 4px; }
-        .main-event .fighter-record { color: #f5af19; font-size: 0.95rem; font-weight: 900; }
-        .main-event .vs-info-center { width: 20%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .main-event .rules-badge { background: linear-gradient(135deg, #f5af19, #f12711); color: #ffffff; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 900; padding: 6px 16px; border-radius: 3px; margin-bottom: 15px; }
-        .main-event .vs-text { font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 900; color: #00d2ff; font-style: italic; margin-bottom: 15px; }
-        .main-event .match-schedule-box { background: rgba(3, 7, 18, 0.8); border: 1px solid rgba(0, 210, 255, 0.4); padding: 8px 12px; border-radius: 4px; }
-        .main-event .match-date { color: #ffffff; font-size: 0.95rem; font-weight: 700; }
-        .main-event .match-time { color: #00d2ff; font-size: 1.1rem; font-weight: 900; margin-top: 3px; }
-
-
-        /* ========================================================
-           --- SISTEM FAKULTAS, WATERMARK IKON & EFEK KELUAR ---
-           ======================================================== */
-
-        :root {
-            --color-hukum: #ef4444;
-            --color-kesehatan: #10b981;
-            --color-teknik: #f59e0b;
-            --color-ekonomi: #3b82f6;
+        .main-event .fighter-box:hover {
+            border-color: #00d2ff;
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
         }
 
-        /* Warna teks & glow fakultas */
-        .fac-hukum { color: var(--color-hukum) !important; text-shadow: 0 0 10px rgba(239, 68, 68, 0.8); }
-        .uc-avatar.fac-hukum { border-color: var(--color-hukum) !important; box-shadow: 0 0 18px rgba(239, 68, 68, 0.8) !important; }
+        .main-event .fighter-img-wrapper {
+            width: 100%;
+            height: 420px;
+            background: #000;
+            border-bottom: 2px solid rgba(0, 210, 255, 0.3);
+            overflow: hidden;
+        }
 
-        .fac-kesehatan { color: var(--color-kesehatan) !important; text-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
-        .uc-avatar.fac-kesehatan { border-color: var(--color-kesehatan) !important; box-shadow: 0 0 18px rgba(16, 185, 129, 0.8) !important; }
+        .main-event .fighter-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(10%) contrast(115%);
+        }
 
-        .fac-teknik { color: var(--color-teknik) !important; text-shadow: 0 0 10px rgba(245, 158, 11, 0.8); }
-        .uc-avatar.fac-teknik { border-color: var(--color-teknik) !important; box-shadow: 0 0 18px rgba(245, 158, 11, 0.8) !important; }
+        .main-event .fighter-details {
+            padding: 22px 15px;
+            background: radial-gradient(circle at top, rgba(0, 210, 255, 0.08), transparent 70%),
+                        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.01) 0px, rgba(255, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
+        }
 
-        .fac-ekonomi { color: var(--color-ekonomi) !important; text-shadow: 0 0 10px rgba(59, 130, 246, 0.8); }
-        .uc-avatar.fac-ekonomi { border-color: var(--color-ekonomi) !important; box-shadow: 0 0 18px rgba(59, 130, 246, 0.8) !important; }
+        .main-event .fighter-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
+        .main-event .fighter-name span.icon {
+            font-size: 1.1rem;
+            color: #f5af19;
+            filter: drop-shadow(0 0 5px rgba(245, 175, 25, 0.8));
+        }
 
-        /* UNDERCARD ROW CONTAINER */
+        .main-event .divider-line {
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d2ff, transparent);
+            margin: 8px auto 12px auto;
+        }
+
+        .main-event .fighter-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(0, 114, 255, 0.2));
+            color: #00d2ff;
+            padding: 4px 14px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid #00d2ff;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .main-event .fighter-camp {
+            color: #cbd5e1;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .main-event .fighter-record-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(245, 175, 25, 0.5);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 4px;
+        }
+
+        .main-event .fighter-record {
+            color: #f5af19;
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .main-event .vs-info-center {
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .main-event .rules-badge {
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 900;
+            padding: 6px 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(245, 175, 25, 0.6);
+            border: 1px solid #fff;
+        }
+
+        .main-event .vs-text {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #00d2ff;
+            text-shadow: 0 0 25px rgba(0, 210, 255, 0.9);
+            line-height: 1;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .main-event .match-schedule-box {
+            background: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .main-event .match-date {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .main-event .match-time {
+            color: #00d2ff;
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-top: 3px;
+        }
+
+        /* --- STYLING KHUSUS UNDERCARD CARD (RINGKAS & COMPACT) --- */
         .undercard-container {
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: 15px;
         }
 
         .undercard-row {
-            border-radius: 10px;
-            padding: 14px 25px;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(3, 7, 18, 0.95));
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 8px;
+            padding: 12px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
-            position: relative;
-            overflow: visible !important; /* MEMUNGKINKAN ELEMEN MENCUAT KELUAR BINGKAI CARD */
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            background: #060b16;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .undercard-row:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+            border-color: #00d2ff;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(11, 19, 41, 0.95));
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+            transform: translateX(4px);
         }
 
-        /* WATERMARK BACKGROUND ICON BERBENTUK BENTUK FAKULTAS (BERULANG DENGAN ICON ASLI DI DALAM) */
-        .side-bg-left, .side-bg-right {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 48%;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.15;
-            background-repeat: repeat;
-            background-size: 60px 60px;
-            border-radius: 10px;
-        }
-
-        .side-bg-left {
-            left: 0;
-            mask-image: linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 85%);
-            -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 85%);
-        }
-
-        .side-bg-right {
-            right: 0;
-            mask-image: linear-gradient(270deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 85%);
-            -webkit-mask-image: linear-gradient(270deg, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 85%);
-        }
-
-        /* SVG Pattern Watermark Dalam Card */
-        .bg-hukum { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%23ef4444'%3E%3Cpath d='M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.7 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 106.5L98.5 400H413.5L256 138.5z'/%3E%3C/svg%3E"); background-size: 45px 45px; }
-        .bg-teknik { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%23f59e0b'%3E%3Cpath d='M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.4l-45.7 39.1c-2.3 2-3.7 4.8-4.1 7.8c-.8 6.4-1.3 12.9-1.3 19.5s.5 13 1.3 19.5c.4 3 1.8 5.8 4.1 7.8l45.7 39.1c6.9 5.9 9.6 15.7 6.4 24.4-7.5 20.4-17.7 39.8-30.3 57.7-5.5 7.8-15 11.2-24.1 8.5l-57.1-17c-5.4-1.6-11.3-.8-16 2.2-11.9 7.4-24.9 13.5-38.7 18.2-5.4 1.8-9.2 6.6-9.8 12.4l-9.8 58.7c-1.8 10.7-10.7 18.7-21.6 18.7H200.7c-10.9 0-19.8-8-21.6-18.7l-9.8-58.7c-.6-5.8-4.4-10.6-9.8-12.4c-13.8-4.7-26.8-10.8-38.7-18.2-4.7-3-10.6-3.8-16-2.2l-57.1 17c-9.1 2.7-18.6-.7-24.1-8.5C30.4 366.5 20.2 347.1 12.7 326.7c-3.2-8.7-.5-18.4 6.4-24.4l45.7-39.1c2.3-2 3.7-4.8 4.1-7.8c.8-6.4 1.3-12.9 1.3-19.5s-.5-13-1.3-19.5c-.4-3-1.8-5.8-4.1-7.8L19.1 191c-6.9-5.9-9.6-15.7-6.4-24.4C20.2 146.2 30.4 126.8 43 108.9c5.5-7.8 15-11.2 24.1-8.5l57.1 17c5.4 1.6 11.3 .8 16-2.2 11.9-7.4 24.9-13.5 38.7-18.2 5.4-1.8 9.2-6.6 9.8-12.4l9.8-58.7C209.7 7.8 218.6 0 229.5 0h53c10.9 0 19.8 8 21.6 18.7l9.8 58.7c.6 5.8 4.4 10.6 9.8 12.4c13.8 4.7 26.8 10.8 38.7 18.2 4.7 3 10.6 3.8 16 2.2l57.1-17c9.1-2.7 18.6 .7 24.1 8.5c12.6 17.9 22.8 37.3 30.3 57.7zM256 336c44.2 0 80-35.8 80-80s-35.8-80-80-80-80 35.8-80 80 35.8 80 80 80z'/%3E%3C/svg%3E"); background-size: 45px 45px; }
-        .bg-kesehatan { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%2310b981'%3E%3Cpath d='M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM232 120c0-13.3 10.7-24 24-24s24 10.7 24 24v112h112c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v112c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H120c-13.3 0-24-10.7-24-24s10.7-24 24-24h112V120z'/%3E%3C/svg%3E"); background-size: 45px 45px; }
-        .bg-ekonomi { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%233b82f6'%3E%3Cpath d='M64 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V64zM192 160c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V160zM320 96c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V96z'/%3E%3C/svg%3E"); background-size: 45px 45px; }
-
-
-        /* DERBY (SATU FAKULTAS): PUSAT TENGAH MEMUDAR KE SAMPING */
-        .undercard-row.derby-hukum {
-            border: 1px solid var(--color-hukum);
-            background: radial-gradient(circle at center, rgba(239, 68, 68, 0.35) 0%, rgba(6, 11, 22, 0.95) 75%);
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
-        }
-        .undercard-row.derby-teknik {
-            border: 1px solid var(--color-teknik);
-            background: radial-gradient(circle at center, rgba(245, 158, 11, 0.35) 0%, rgba(6, 11, 22, 0.95) 75%);
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
-        }
-        .undercard-row.derby-kesehatan {
-            border: 1px solid var(--color-kesehatan);
-            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.35) 0%, rgba(6, 11, 22, 0.95) 75%);
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
-        }
-        .undercard-row.derby-ekonomi {
-            border: 1px solid var(--color-ekonomi);
-            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.35) 0%, rgba(6, 11, 22, 0.95) 75%);
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
-        }
-
-
-        /* ELEMEN PETARUNG */
+        /* PETARUNG SIDE DI UNDERCARD */
         .uc-fighter {
             display: flex;
             align-items: center;
             gap: 15px;
             width: 38%;
-            z-index: 2;
-            position: relative;
         }
 
         .uc-fighter.right {
@@ -310,23 +388,15 @@
             text-align: right;
         }
 
-        .uc-avatar-wrapper {
-            position: relative;
-            flex-shrink: 0;
-        }
-
         .uc-avatar {
-            width: 78px;
-            height: 78px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid #00d2ff;
+            border: 2px solid #00d2ff;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+            flex-shrink: 0;
             background: #000;
-            transition: transform 0.3s ease;
-        }
-
-        .undercard-row:hover .uc-avatar {
-            transform: scale(1.08);
         }
 
         .uc-avatar img {
@@ -336,66 +406,6 @@
             filter: grayscale(10%) contrast(110%);
         }
 
-        /* EMBLEM DI DALAM AVATAR POJOK KECIL */
-        .emblem-badge-in {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            background: #030712;
-            color: #fff;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            border: 2px solid currentColor;
-            z-index: 5;
-        }
-
-        .uc-fighter.right .emblem-badge-in {
-            right: auto;
-            left: -2px;
-        }
-
-
-        /* ========================================================
-           --- EFEK KHUSUS LOGO / EMBLEM JUMBO YANG MENCUAT KELUAR CARD ---
-           ======================================================== */
-        .outer-faculty-emblem {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 55px;
-            height: 55px;
-            background: #030712;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            border: 3px solid currentColor;
-            box-shadow: 0 0 20px currentColor, 0 0 8px rgba(0,0,0,0.9);
-            z-index: 15; /* SANGAT TINGGI SUPAYA MELAYANG DI ATAS OUTSIDE BORDER CARD */
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        /* POSISI MENCUAT MENEMBUS BATAS TEPI CARD KIRI & KANAN */
-        .outer-faculty-emblem.left-side {
-            left: -22px; /* MENCUAT KELUAR TEPI KIRI */
-        }
-
-        .outer-faculty-emblem.right-side {
-            right: -22px; /* MENCUAT KELUAR TEPI KANAN */
-        }
-
-        .undercard-row:hover .outer-faculty-emblem {
-            transform: translateY(-50%) scale(1.15) rotate(8deg);
-        }
-
-
         .uc-info {
             display: flex;
             flex-direction: column;
@@ -403,7 +413,7 @@
 
         .uc-name {
             font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 1px;
@@ -428,13 +438,6 @@
             font-weight: 700;
         }
 
-        .uc-camp-tag {
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
         .uc-record {
             color: #f5af19;
             font-weight: 700;
@@ -450,20 +453,7 @@
             justify-content: center;
             width: 20%;
             text-align: center;
-            z-index: 2;
-            position: relative;
         }
-
-        .uc-vs-center::before, .uc-vs-center::after {
-            content: '';
-            position: absolute;
-            top: 10%;
-            height: 80%;
-            width: 1px;
-            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.25), transparent);
-        }
-        .uc-vs-center::before { left: 0; }
-        .uc-vs-center::after { right: 0; }
 
         .uc-rules-badge {
             background: rgba(0, 210, 255, 0.15);
@@ -493,31 +483,187 @@
             color: #ffffff;
             font-weight: 700;
             margin-top: 4px;
+            letter-spacing: 0.5px;
         }
 
-        /* --- MOBILE RESPONSIF --- */
+        /* --- MOBILE RESPONSIF (HP) --- */
         @media (max-width: 768px) {
-            nav { padding: 12px 15px; flex-direction: column; gap: 10px; align-items: center; }
-            .nav-logo { font-size: 1.2rem; }
-            .nav-links { display: flex; gap: 8px; list-style: none; width: 100%; justify-content: center; overflow-x: auto; white-space: nowrap; padding: 4px 0; }
-            .nav-links::-webkit-scrollbar { display: none; }
-            .nav-links a { font-size: 0.8rem; }
-            .page-title { font-size: 2.2rem; }
+            nav {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
 
-            .undercard-row { padding: 12px 8px; }
-            .uc-fighter { gap: 8px; width: 39%; }
-            .uc-avatar { width: 55px; height: 55px; }
-            .outer-faculty-emblem { width: 36px; height: 36px; font-size: 1rem; }
-            .outer-faculty-emblem.left-side { left: -14px; }
-            .outer-faculty-emblem.right-side { right: -14px; }
-            .uc-name { font-size: 0.9rem; }
-            .uc-meta { font-size: 0.7rem; flex-direction: column; align-items: flex-start; gap: 0; }
-            .uc-fighter.right .uc-meta { align-items: flex-end; }
-            .uc-record { font-size: 0.7rem; }
-            .uc-vs-center { width: 22%; }
-            .uc-rules-badge { font-size: 0.6rem; padding: 1px 5px; }
-            .uc-vs-text { font-size: 1.3rem; }
-            .uc-time { font-size: 0.65rem; }
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 8px;
+                list-style: none;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 4px 0;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+
+            .nav-cta {
+                padding: 4px 10px !important;
+                font-size: 0.8rem !important;
+            }
+
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            /* MAIN EVENT MOBILE */
+            .fight-card-item.main-event {
+                padding: 20px 8px 15px 8px;
+                gap: 4px;
+            }
+
+            .main-event-ribbon {
+                font-size: 0.7rem;
+                padding: 4px 15px;
+                top: -12px;
+            }
+
+            .main-event .fighter-box {
+                width: 38%;
+            }
+
+            .main-event .fighter-img-wrapper {
+                height: 170px;
+            }
+
+            .main-event .fighter-details {
+                padding: 8px 4px;
+            }
+
+            .main-event .fighter-name {
+                font-size: 0.85rem;
+                margin-bottom: 2px;
+                gap: 2px;
+            }
+
+            .main-event .fighter-name span.icon {
+                font-size: 0.75rem;
+            }
+
+            .main-event .divider-line {
+                width: 80%;
+                margin: 4px auto;
+            }
+
+            .main-event .fighter-badge {
+                font-size: 0.6rem;
+                padding: 2px 4px;
+                margin-bottom: 4px;
+            }
+
+            .main-event .fighter-camp {
+                font-size: 0.65rem;
+                margin-bottom: 4px;
+            }
+
+            .main-event .fighter-record-box {
+                padding: 3px 6px;
+            }
+
+            .main-event .fighter-record {
+                font-size: 0.65rem;
+            }
+
+            .main-event .vs-info-center {
+                width: 24%;
+                padding: 0 2px;
+            }
+
+            .main-event .rules-badge {
+                font-size: 0.6rem;
+                padding: 3px 6px;
+                margin-bottom: 8px;
+            }
+
+            .main-event .vs-text {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            .main-event .match-schedule-box {
+                padding: 4px 6px;
+            }
+
+            .main-event .match-date {
+                font-size: 0.6rem;
+            }
+
+            .main-event .match-time {
+                font-size: 0.7rem;
+            }
+
+            /* UNDERCARD MOBILE */
+            .undercard-row {
+                padding: 10px 8px;
+            }
+
+            .uc-fighter {
+                gap: 8px;
+                width: 39%;
+            }
+
+            .uc-avatar {
+                width: 50px;
+                height: 50px;
+            }
+
+            .uc-name {
+                font-size: 0.9rem;
+            }
+
+            .uc-meta {
+                font-size: 0.7rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+            }
+
+            .uc-fighter.right .uc-meta {
+                align-items: flex-end;
+            }
+
+            .uc-record {
+                font-size: 0.7rem;
+            }
+
+            .uc-vs-center {
+                width: 22%;
+            }
+
+            .uc-rules-badge {
+                font-size: 0.6rem;
+                padding: 1px 5px;
+            }
+
+            .uc-vs-text {
+                font-size: 1.3rem;
+            }
+
+            .uc-time {
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
@@ -542,272 +688,854 @@
 
     <div class="schedule-container">
 
-        <!-- CATEGORY 1: MAIN EVENT (TETAP) -->
+        <!-- CATEGORY 1: MAIN EVENT (DESIGN TETAP MEGAH & SANGAR) -->
         <h2 class="category-title">🔥 Main Event (Pertandingan Puncak)</h2>
 
         <div class="fight-card-item main-event">
             <div class="main-event-ribbon">🏆 MAIN EVENT 🏆</div>
 
+            <!-- Petarung 1 -->
             <div class="fighter-box">
                 <div class="fighter-img-wrapper">
-                    <img src="foto/akmalfighter.jpeg" alt="Fighter 1" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
+                    <img src="foto/slicky-boy.png" alt="Fighter 1" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
                 </div>
                 <div class="fighter-details">
-                    <h3 class="fighter-name"><span class="icon">⚔️</span> AKMAL <span class="icon">⚔️</span></h3>
+                    <h3 class="fighter-name"><span class="icon">⚔️</span> Slicky Boy <span class="icon">⚔️</span></h3>
                     <div class="divider-line"></div>
                     <span class="fighter-badge">Lightweight</span>
-                    <p class="fighter-camp">CAMP: HUKUM</p>
+                    <p class="fighter-camp">LIGA: EKONOMI</p>
                     <div class="fighter-record-box">
-                        <p class="fighter-record">Rekor: 5-0 (4 KO)</p>
+                        <p class="fighter-record">Rekor: 0-0-0 </p>
                     </div>
                 </div>
             </div>
 
+            <!-- VS & Schedule Center -->
             <div class="vs-info-center">
-                <span class="rules-badge">Boxing Rules</span>
+                <span class="rules-badge">BOXING RULES</span>
                 <div class="vs-text">VS</div>
                 <div class="match-schedule-box">
-                    <div class="match-date">Sabtu, 24 Okt</div>
-                    <div class="match-time">21.00 WIB</div>
+                    <div class="match-date">Sabtu, 14 Nov</div>
+                    <div class="match-time">22.50 WIB</div>
                 </div>
             </div>
 
+            <!-- Petarung 2 -->
             <div class="fighter-box">
                 <div class="fighter-img-wrapper">
-                    <img src="foto/fadel.jpeg" alt="Fighter 2" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
+                    <img src="foto/bbc.png" alt="Fighter 2" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
                 </div>
                 <div class="fighter-details">
-                    <h3 class="fighter-name"><span class="icon">⚔️</span> FADEL <span class="icon">⚔️</span></h3>
+                    <h3 class="fighter-name"><span class="icon">⚔️</span> BBC <span class="icon">⚔️</span></h3>
                     <div class="divider-line"></div>
                     <span class="fighter-badge">Lightweight</span>
-                    <p class="fighter-camp">CAMP: EKONOMI</p>
+                    <p class="fighter-camp">LIGA: TEKNIK</p>
                     <div class="fighter-record-box">
-                        <p class="fighter-record">Rekor: 6-0 (5 KO)</p>
+                        <p class="fighter-record">Rekor: 0-0-0 </p>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- CO MAIN EVENT -->
+        <h2 class="category-title">🔥 CO-Main Event (Pertandingan Puncak)</h2>
+
+        <div class="fight-card-item main-event">
+            <div class="main-event-ribbon">CO-MAIN EVENT</div>
+
+            <!-- Petarung 1 -->
+            <div class="fighter-box">
+                <div class="fighter-img-wrapper">
+                    <img src="foto/the-ruby-queen.png" alt="Fighter 1" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="fighter-details">
+                    <h3 class="fighter-name"><span class="icon">⚔️</span> The Ruby Queen <span class="icon">⚔️</span></h3>
+                    <div class="divider-line"></div>
+                    <span class="fighter-badge">Featherweight</span>
+                    <p class="fighter-camp">LIGA: HUKUM</p>
+                    <div class="fighter-record-box">
+                        <p class="fighter-record">Rekor: 0-0-0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VS & Schedule Center -->
+            <div class="vs-info-center">
+                <span class="rules-badge">Boxing Rules</span>
+                <div class="vs-text">VS</div>
+                <div class="match-schedule-box">
+                    <div class="match-date">Sabtu, 14 Nov</div>
+                    <div class="match-time">22.30 WIB</div>
+                </div>
+            </div>
+
+            <!-- Petarung 2 -->
+            <div class="fighter-box">
+                <div class="fighter-img-wrapper">
+                    <img src="foto/gougiyy.jpeg" alt="Fighter 2" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="fighter-details">
+                    <h3 class="fighter-name"><span class="icon">⚔️</span> Gougiyy <span class="icon">⚔️</span></h3>
+                    <div class="divider-line"></div>
+                    <span class="fighter-badge">Featherweight</span>
+                    <p class="fighter-camp">LIGA: KESEHATAN</p>
+                    <div class="fighter-record-box">
+                        <p class="fighter-record">Rekor: 0-0-0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
 
-        <!-- CATEGORY 2: UNDERCARD FIGHTS -->
-        <h2 class="category-title">⚡ Undercard Fights (Laga Pendukung)</h2>
+        <!-- CATEGORY 2: UNDERCARD FIGHTS (DESIGN RINGKAS & MUAT BANYAK) -->
+        <h2 class="category-title">⚡ Undercard Fights</h2>
 
         <div class="undercard-container">
 
-            <!-- LAGA 1: BIMA (Teknik) VS ZIKRI (Ekonomi) -->
-            <div class="undercard-row" style="background: linear-gradient(90deg, rgba(245, 158, 11, 0.28) 0%, rgba(6, 11, 22, 0.95) 50%, rgba(59, 130, 246, 0.28) 100%); border-color: rgba(245, 158, 11, 0.5);">
-                
-                <!-- LOGO EMBLEM MENCUAT KELUAR DI LUAR BINGKAI CARD -->
-                <div class="outer-faculty-emblem left-side fac-teknik"><i class="fa-solid fa-gears"></i></div>
-                <div class="outer-faculty-emblem right-side fac-ekonomi"><i class="fa-solid fa-coins"></i></div>
-
-                <!-- Watermark Ikon Dalam Card -->
-                <div class="side-bg-left bg-teknik"></div>
-                <div class="side-bg-right bg-ekonomi"></div>
-
+            <!-- LAGA UNDERCARD 1 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
                 <div class="uc-fighter left">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-teknik">
-                            <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-teknik"><i class="fa-solid fa-gear"></i></div>
+                    <div class="uc-avatar">
+                        <img src="foto/labib.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
                     </div>
                     <div class="uc-info">
-                        <h4 class="uc-name">BIMA</h4>
+                        <h4 class="uc-name">Labib</h4>
                         <div class="uc-meta">
-                            <span class="uc-class">Welterweight</span>
-                            <span>|</span>
-                            <span class="uc-camp-tag fac-teknik"><i class="fa-solid fa-gear"></i> TEKNIK</span>
+                            <span class="uc-class">Heavyweight</span>
+                            <span>| LIGA HUKUM</span>
                         </div>
-                        <p class="uc-record">4-1 (2 KO)</p>
+                        <p class="uc-record">0-0-0</p>
                     </div>
                 </div>
 
+                <!-- Center VS & Time -->
                 <div class="uc-vs-center">
-                    <span class="uc-rules-badge">Kickboxing</span>
+                    <span class="uc-rules-badge">BOXING</span>
                     <div class="uc-vs-text">VS</div>
-                    <div class="uc-time">20.00 WIB</div>
+                    <div class="uc-time">16.00 WIB</div>
                 </div>
 
+                <!-- Petarung Kanan -->
                 <div class="uc-fighter right">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-ekonomi">
-                            <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-ekonomi"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="uc-avatar">
+                        <img src="foto/wawan-bengkel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
                     </div>
                     <div class="uc-info">
-                        <h4 class="uc-name">ZIKRI</h4>
+                        <h4 class="uc-name">Wawan Bengkel</h4>
                         <div class="uc-meta">
-                            <span class="uc-camp-tag fac-ekonomi"><i class="fa-solid fa-chart-line"></i> EKONOMI</span>
-                            <span>|</span>
-                            <span class="uc-class">Welterweight</span>
+                            <span class="uc-class">Heavyweight</span>
+                            <span>| LIGA KESEHATAN</span>
                         </div>
-                        <p class="uc-record">3-1 (2 KO)</p>
+                        <p class="uc-record">0-0-0</p>
                     </div>
                 </div>
             </div>
 
-
-            <!-- LAGA 2: SATRIA (Kesehatan) VS DONI (Hukum) -->
-            <div class="undercard-row" style="background: linear-gradient(90deg, rgba(16, 185, 129, 0.28) 0%, rgba(6, 11, 22, 0.95) 50%, rgba(239, 68, 68, 0.28) 100%); border-color: rgba(16, 185, 129, 0.5);">
-                
-                <!-- LOGO EMBLEM MENCUAT KELUAR DI LUAR BINGKAI CARD -->
-                <div class="outer-faculty-emblem left-side fac-kesehatan"><i class="fa-solid fa-heart-pulse"></i></div>
-                <div class="outer-faculty-emblem right-side fac-hukum"><i class="fa-solid fa-scale-unbalanced"></i></div>
-
-                <div class="side-bg-left bg-kesehatan"></div>
-                <div class="side-bg-right bg-hukum"></div>
-
+            <!-- LAGA UNDERCARD 2 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
                 <div class="uc-fighter left">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-kesehatan">
-                            <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-kesehatan"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div class="uc-avatar">
+                        <img src="foto/anug.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
                     </div>
                     <div class="uc-info">
-                        <h4 class="uc-name">SATRIA</h4>
-                        <div class="uc-meta">
-                            <span class="uc-class">Featherweight</span>
-                            <span>|</span>
-                            <span class="uc-camp-tag fac-kesehatan"><i class="fa-solid fa-user-doctor"></i> KESEHATAN</span>
-                        </div>
-                        <p class="uc-record">2-2 (1 KO)</p>
-                    </div>
-                </div>
-
-                <div class="uc-vs-center">
-                    <span class="uc-rules-badge">Muay Thai</span>
-                    <div class="uc-vs-text">VS</div>
-                    <div class="uc-time">19.15 WIB</div>
-                </div>
-
-                <div class="uc-fighter right">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-hukum">
-                            <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-hukum"><i class="fa-solid fa-scale-balanced"></i></div>
-                    </div>
-                    <div class="uc-info">
-                        <h4 class="uc-name">DONI</h4>
-                        <div class="uc-meta">
-                            <span class="uc-camp-tag fac-hukum"><i class="fa-solid fa-scale-balanced"></i> HUKUM</span>
-                            <span>|</span>
-                            <span class="uc-class">Featherweight</span>
-                        </div>
-                        <p class="uc-record">2-3 (0 KO)</p>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- LAGA 3: RIKI (Hukum) VS BAYU (Hukum) - DERBY SAMA FAKULTAS -->
-            <div class="undercard-row derby-hukum">
-                
-                <!-- LOGO EMBLEM MENCUAT KELUAR DI LUAR BINGKAI CARD -->
-                <div class="outer-faculty-emblem left-side fac-hukum"><i class="fa-solid fa-scale-unbalanced"></i></div>
-                <div class="outer-faculty-emblem right-side fac-hukum"><i class="fa-solid fa-scale-unbalanced"></i></div>
-
-                <div class="side-bg-left bg-hukum" style="width: 100%; mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 75%); -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 75%);"></div>
-
-                <div class="uc-fighter left">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-hukum">
-                            <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-hukum"><i class="fa-solid fa-scale-balanced"></i></div>
-                    </div>
-                    <div class="uc-info">
-                        <h4 class="uc-name">RIKI</h4>
+                        <h4 class="uc-name">Anug</h4>
                         <div class="uc-meta">
                             <span class="uc-class">Lightweight</span>
-                            <span>|</span>
-                            <span class="uc-camp-tag fac-hukum"><i class="fa-solid fa-scale-balanced"></i> HUKUM</span>
+                            <span>| LIGA HUKUM</span>
                         </div>
-                        <p class="uc-record">1-2 (0 KO)</p>
+                        <p class="uc-record">0-0-0</p>
                     </div>
                 </div>
 
+                <!-- Center VS & Time -->
                 <div class="uc-vs-center">
-                    <span class="uc-rules-badge">Boxing</span>
+                    <span class="uc-rules-badge">KICKBOXING</span>
                     <div class="uc-vs-text">VS</div>
-                    <div class="uc-time">18.30 WIB</div>
+                    <div class="uc-time">16.20 WIB</div>
                 </div>
 
+                <!-- Petarung Kanan -->
                 <div class="uc-fighter right">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-hukum">
-                            <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-hukum"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <div class="uc-avatar">
+                        <img src="foto/Gulam.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
                     </div>
                     <div class="uc-info">
-                        <h4 class="uc-name">BAYU</h4>
+                        <h4 class="uc-name">Gulam</h4>
                         <div class="uc-meta">
-                            <span class="uc-camp-tag fac-hukum"><i class="fa-solid fa-scale-balanced"></i> HUKUM</span>
-                            <span>|</span>
                             <span class="uc-class">Lightweight</span>
+                            <span>| LIGA EKONOMI</span>
                         </div>
-                        <p class="uc-record">2-2 (1 KO)</p>
+                        <p class="uc-record">0-0-0</p>
                     </div>
                 </div>
             </div>
 
-
-            <!-- LAGA 4: ARIF (Teknik) VS GIBRAN (Teknik) - DERBY TEKNIK -->
-            <div class="undercard-row derby-teknik">
-                
-                <!-- LOGO EMBLEM MENCUAT KELUAR DI LUAR BINGKAI CARD -->
-                <div class="outer-faculty-emblem left-side fac-teknik"><i class="fa-solid fa-gears"></i></div>
-                <div class="outer-faculty-emblem right-side fac-teknik"><i class="fa-solid fa-gears"></i></div>
-
-                <div class="side-bg-left bg-teknik" style="width: 100%; mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 75%); -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 75%);"></div>
-
+            <!-- LAGA UNDERCARD 3 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
                 <div class="uc-fighter left">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-teknik">
-                            <img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-teknik"><i class="fa-solid fa-gear"></i></div>
+                    <div class="uc-avatar">
+                        <img src="foto/yazid.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
                     </div>
                     <div class="uc-info">
-                        <h4 class="uc-name">ARIF</h4>
+                        <h4 class="uc-name">Yazid</h4>
                         <div class="uc-meta">
-                            <span class="uc-class">Welterweight</span>
-                            <span>|</span>
-                            <span class="uc-camp-tag fac-teknik"><i class="fa-solid fa-gear"></i> TEKNIK</span>
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA GENERAL</span>
                         </div>
-                        <p class="uc-record">1-3 (0 KO)</p>
+                        <p class="uc-record">0-0-0</p>
                     </div>
                 </div>
 
+                <!-- Center VS & Time -->
                 <div class="uc-vs-center">
-                    <span class="uc-rules-badge">Kickboxing</span>
+                    <span class="uc-rules-badge">BOXING</span>
                     <div class="uc-vs-text">VS</div>
-                    <div class="uc-time">17.45 WIB</div>
+                    <div class="uc-time">16.40 WIB</div>
                 </div>
 
+                <!-- Petarung Kanan -->
                 <div class="uc-fighter right">
-                    <div class="uc-avatar-wrapper">
-                        <div class="uc-avatar fac-teknik">
-                            <img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
-                        </div>
-                        <div class="emblem-badge-in fac-teknik"><i class="fa-solid fa-gear"></i></div>
+                    <div class="uc-avatar">
+                        <img src="foto/the-punisher.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
                     </div>
                     <div class="uc-info">
-                        <h4 class="uc-name">GIBRAN</h4>
+                        <h4 class="uc-name">THE PUNISHER</h4>
                         <div class="uc-meta">
-                            <span class="uc-camp-tag fac-teknik"><i class="fa-solid fa-gear"></i> TEKNIK</span>
-                            <span>|</span>
-                            <span class="uc-class">Welterweight</span>
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA PSIKOLOGI</span>
                         </div>
-                        <p class="uc-record">3-0 (2 KO)</p>
+                        <p class="uc-record">0-0-0</p>
                     </div>
                 </div>
             </div>
 
+            <!-- LAGA UNDERCARD 4 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/iben.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Iben</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.00 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/the-cold-rush.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">The Cold Rush</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 5 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/pak-guru-boxing.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Pak Guru Boxing</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| LIGA PENDIDIKAN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.20 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/kanz.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Kanz</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 6 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/havoc.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Havoc</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA TEKNIK</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">17.40 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/azka.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Azka</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 7 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/prince.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Prince</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA ILKOM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">18.00 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/reza.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Reza</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 8 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/fahreza.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Fahreza</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">18.20 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/zenyi.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Zenyi</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 9 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/the-youngest.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">The Youngest</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA TEKNIN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">18.50 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/si-bengis-kmss.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Si Bengis KMSS</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 10 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/sundaman.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Sundaman</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Bantamweight</span>
+                            <span>| LIGA GENERAL</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">KICKBOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">19.10 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/farhan.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Farhan</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Bantamweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 11 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/the-blessed.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">The Blessed</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Bantamweight</span>
+                            <span>| LIGA PENDIDIKAN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">KICKBOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">19.30 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/ajo-ryan.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Ajo Ryan</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Bantamweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 12 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/lubis.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Lubis</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| LIGA GENERAL</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">KICKBOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">19.50 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/bajang-rumaq.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Bajang Rumaq</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Featherweight</span>
+                            <span>| LIGA PSIKOLOGI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 13 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/jopras.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">jopras</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA PSIKOLOGI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">20.10 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/ripun.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Ripun</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA KESEHATAN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 14 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/prans.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Prans</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">20.30 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/jacki.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Jacki</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA EKONOMI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 15 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/pall.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Pall</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| LIGA KESEHATAN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">20.50 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/dr-puncher.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">DR. Puncher</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Welterweight</span>
+                            <span>| LIGA KESEHATAN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 16 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/the-chicken.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">The Chicken</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA ILKOM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">KICKBOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">21.10 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/manay.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Manay</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA PSIKOLOGI</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 17 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/najwan.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Najwan</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">KICKBOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">21.30 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/naufal.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Naufal</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 18 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/valas.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Valas</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">BOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">21.50 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/gani.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Gani</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Lightheavyweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- LAGA UNDERCARD 19 -->
+            <div class="undercard-row">
+                <!-- Petarung Kiri -->
+                <div class="uc-fighter left">
+                    <div class="uc-avatar">
+                        <img src="foto/moza.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Moza</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA HUKUM</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+
+                <!-- Center VS & Time -->
+                <div class="uc-vs-center">
+                    <span class="uc-rules-badge">KICKBOXING</span>
+                    <div class="uc-vs-text">VS</div>
+                    <div class="uc-time">22.10 WIB</div>
+                </div>
+
+                <!-- Petarung Kanan -->
+                <div class="uc-fighter right">
+                    <div class="uc-avatar">
+                        <img src="foto/arap.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'">
+                    </div>
+                    <div class="uc-info">
+                        <h4 class="uc-name">Arap</h4>
+                        <div class="uc-meta">
+                            <span class="uc-class">Middleweight</span>
+                            <span>| LIGA KESEHATAN</span>
+                        </div>
+                        <p class="uc-record">0-0-0</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
