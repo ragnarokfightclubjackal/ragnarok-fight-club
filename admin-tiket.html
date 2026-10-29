@@ -367,6 +367,35 @@
             font-size: 0.85rem;
         }
 
+        /* BADGE TIPE TIKET */
+        .badge-tier-reg {
+            background: rgba(148, 163, 184, 0.15);
+            color: #94a3b8;
+            border: 1px solid #94a3b8;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .badge-tier-seat {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .badge-tier-vip {
+            background: rgba(245, 175, 25, 0.15);
+            color: #f5af19;
+            border: 1px solid #f5af19;
+            padding: 3px 8px;
+            border-radius: 2px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
         .action-buttons {
             display: flex;
             gap: 8px;
@@ -407,6 +436,24 @@
         }
         .btn-reject:hover {
             box-shadow: 0 0 10px rgba(245, 175, 25, 0.6);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            border-radius: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .btn-edit:hover {
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
         }
 
         .btn-delete {
@@ -464,7 +511,6 @@
                 white-space: nowrap;
             }
 
-            /* STATS CONTAINER DI HP: DIBUAT BISA DIGESER HORIZONTAL / BERJAJAR KESAMPING */
             .stats-container {
                 display: flex;
                 flex-direction: row;
@@ -580,6 +626,7 @@
                             <th>Waktu Beli</th>
                             <th>Nama Lengkap</th>
                             <th>No WhatsApp</th>
+                            <th>Tipe Tiket</th>
                             <th>Bukti Transfer</th>
                             <th>Status</th>
                             <th>Kode Tiket</th>
@@ -588,7 +635,7 @@
                     </thead>
                     <tbody id="ticket-table-body">
                         <tr>
-                            <td colspan="7" style="text-align: center; color: #94a3b8;">Memuat data tiket...</td>
+                            <td colspan="8" style="text-align: center; color: #94a3b8;">Memuat data tiket...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -599,7 +646,7 @@
 
     <!-- JAVASCRIPT LOGIC ADMIN -->
     <script>
-        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwVJ9qli2AaPTvDfx2OAnmGkHKcTlDH9M6J0S42DOKPt6WMjiUdDnD0TW2ZH_5uW8ed/exec";
+        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbzHSN2k0ATfksxMGVKhTNQTp-sCHg_AdbqEPf-3nKp1qDYQcVuuOYG8vjcZzFsjBgp2/exec";
 
         let allTickets = [];
         let currentFilter = 'all';
@@ -616,13 +663,10 @@
             const pass = document.getElementById('password').value.trim();
             const rokok = document.getElementById('rokok').value.trim().toLowerCase();
 
-            // Kredensial disamarkan (Encoded Base64) agar tidak terlihat langsung di GitHub
-            // Asli:
             const encodedUser = "YW1ib24="; 
             const encodedPass = "ZGlja2Jvbg==";
             const encodedRokok = "Y2FtZWw=";
 
-            // Fungsi dekoder sederhana
             const decode = (str) => atob(str);
 
             if (user === decode(encodedUser) && pass === decode(encodedPass) && rokok === decode(encodedRokok)) {
@@ -659,7 +703,7 @@
 
             } catch (error) {
                 console.error("Gagal memuat data:", error);
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #ff4b2b;">Gagal terhubung ke database. Periksa URL Web App.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #ff4b2b;">Gagal terhubung ke database. Periksa URL Web App.</td></tr>`;
             }
         }
 
@@ -721,7 +765,7 @@
             }
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8;">Tidak ada data tiket yang ditemukan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #94a3b8;">Tidak ada data tiket yang ditemukan.</td></tr>`;
                 return;
             }
 
@@ -737,6 +781,15 @@
                 } else if (ticket.status === "Ditolak") {
                     statusBadge = `<span class="badge-rejected">Ditolak</span>`;
                 }
+
+                // Badge Tipe Tiket
+                let tierBadge = `<span class="badge-tier-reg">REGULER</span>`;
+                const tipe = ticket.tipeTiket ? ticket.tipeTiket.toLowerCase() : "reguler";
+                if (tipe === 'seat') {
+                    tierBadge = `<span class="badge-tier-seat">SEAT</span>`;
+                } else if (tipe === 'vip') {
+                    tierBadge = `<span class="badge-tier-vip">VIP</span>`;
+                }
                 
                 const kodeDisplay = ticket.kodeTiket && ticket.kodeTiket !== "-" ? ticket.kodeTiket : "-";
                 
@@ -744,6 +797,7 @@
                     <div class="action-buttons">
                         <button class="btn-action" onclick="ubahStatus(${ticket.rowId}, 'Approved', '${ticket.nama}', '${ticket.no_hp}')">Approve</button>
                         <button class="btn-reject" onclick="ubahStatus(${ticket.rowId}, 'Ditolak', '${ticket.nama}', '${ticket.no_hp}')">Tolak</button>
+                        <button class="btn-edit" onclick="editTipeTiket(${ticket.rowId}, '${ticket.nama}', '${ticket.tipeTiket || 'Reguler'}')">Edit Tipe</button>
                         <button class="btn-delete" onclick="hapusTiket(${ticket.rowId}, '${ticket.nama}')">Hapus</button>
                     </div>
                 `;
@@ -753,6 +807,7 @@
                     <td>${tanggal}</td>
                     <td><strong>${ticket.nama}</strong></td>
                     <td>${ticket.no_hp}</td>
+                    <td>${tierBadge}</td>
                     <td><a href="${ticket.linkBukti}" target="_blank" class="link-bukti">Lihat Foto 🔍</a></td>
                     <td>${statusBadge}</td>
                     <td><code>${kodeDisplay}</code></td>
@@ -760,6 +815,33 @@
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        async function editTipeTiket(rowId, nama, currentTier) {
+            const pilihanBaru = prompt(`Ubah Tipe Tiket untuk "${nama}"\n\nKetik salah satu pilihan:\n- Reguler\n- Seat\n- VIP`, currentTier);
+            if (!pilihanBaru) return;
+
+            const formatTipe = pilihanBaru.trim();
+            if (!['reguler', 'seat', 'vip'].includes(formatTipe.toLowerCase())) {
+                alert("Pilihan tidak valid! Harap masukkan: Reguler, Seat, atau VIP.");
+                return;
+            }
+
+            try {
+                const res = await fetch(URL_WEB_APP, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: "updateTier", rowId: rowId, tipeTiket: formatTipe })
+                });
+                const result = await res.json();
+                alert(`Tipe tiket atas nama ${nama} berhasil diubah menjadi ${formatTipe}!`);
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                muatDataTiket();
+            } catch (error) {
+                console.error("Error updating tier:", error);
+                alert("Terjadi kesalahan saat mengubah tipe tiket.");
+            }
         }
 
         async function ubahStatus(rowId, statusAksi, nama, noHp) {
@@ -787,13 +869,10 @@
                         formattedHp = '62' + formattedHp;
                     }
 
-                    // Mengambil 4 digit terakhir dari kode tiket resmi
-const last4 = officialKode.slice(-4);
+                    const last4 = officialKode.slice(-4);
+                    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(last4)}`;
 
-// Link API QR Code gratis yang memuat 4 digit angka terakhir kode tiket
-const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(last4)}`;
-
-const pesan = `Halo Kak *${nama}*, pembayaran tiket RFC (Ragnarok Fight Club) Anda telah diverifikasi & di-approve! 🎉\n\n🔑 *Kode Tiket Unik:* ${officialKode}\n\n📱 *QR Code Tiket Anda:* \n${qrUrl}\n\nTunjukkan QR Code atau 4 digit kode tiket di atas ke petugas gate saat masuk venue ya. Sampai jumpa di arena! 🥊🔥`;
+                    const pesan = `Halo Kak *${nama}*, pembayaran tiket RFC (Ragnarok Fight Club) Anda telah diverifikasi & di-approve! 🎉\n\n🔑 *Kode Tiket Unik:* ${officialKode}\n\n📱 *QR Code Tiket Anda:* \n${qrUrl}\n\nTunjukkan QR Code atau 4 digit kode tiket di atas ke petugas gate saat masuk venue ya. Sampai jumpa di arena! 🥊🔥`;
                     const waUrl = `https://wa.me/${formattedHp}?text=${encodeURIComponent(pesan)}`;
                     window.open(waUrl, '_blank');
                     alert("Tiket berhasil di-approve! Tab WhatsApp pengiriman pesan ke pembeli telah dibuka.");

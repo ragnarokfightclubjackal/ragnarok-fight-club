@@ -223,8 +223,22 @@
         .modal-message {
             font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             line-height: 1.4;
+        }
+
+        .modal-tier {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.2);
+            color: #00d2ff;
+            border: 1px solid #00d2ff;
+            padding: 4px 14px;
+            border-radius: 4px;
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
         .modal-subtext {
@@ -281,6 +295,7 @@
         <div class="modal-box" id="modal-box-border">
             <div class="modal-title" id="modal-title">STATUS TIKET</div>
             <div class="modal-message" id="modal-message">Pesan status di sini...</div>
+            <div class="modal-tier" id="modal-tier">TIPE TIKET</div>
             <div class="modal-subtext" id="modal-subtext">Nama Penonton</div>
             <button onclick="tutupModal()" class="btn-close-modal">OK / Lanjut</button>
         </div>
@@ -288,25 +303,22 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbwVJ9qli2AaPTvDfx2OAnmGkHKcTlDH9M6J0S42DOKPt6WMjiUdDnD0TW2ZH_5uW8ed/exec";
+        const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbzHSN2k0ATfksxMGVKhTNQTp-sCHg_AdbqEPf-3nKp1qDYQcVuuOYG8vjcZzFsjBgp2/exec";
 
         let html5QrCode = null;
         let isScanning = false;
 
-        // Shortcut tekan Enter langsung verifikasi
         document.getElementById('kode-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 prosesCekTiket();
             }
         });
 
-        // KONTROL KAMERA SCANNER
         async function toggleScanner() {
             const wrapper = document.getElementById('reader-wrapper');
             const btnToggle = document.getElementById('btn-toggle-camera');
 
             if (isScanning) {
-                // Matikan Kamera
                 if (html5QrCode) {
                     await html5QrCode.stop();
                 }
@@ -316,7 +328,6 @@
                 btnToggle.style.color = "#00d2ff";
                 isScanning = false;
             } else {
-                // Buka Kamera
                 wrapper.style.display = "block";
                 btnToggle.innerText = "❌ Tutup Kamera";
                 btnToggle.style.borderColor = "#ff4b2b";
@@ -327,7 +338,7 @@
 
                 try {
                     await html5QrCode.start(
-                        { facingMode: "environment" }, // Pakai kamera belakang HP
+                        { facingMode: "environment" },
                         config,
                         onScanSuccess
                     );
@@ -340,35 +351,28 @@
             }
         }
 
-        // KETIKA QR CODE BERHASIL TERBACAM LEWAT KAMERA
-        // KETIKA QR CODE BERHASIL TERBACA LEWAT KAMERA
-function onScanSuccess(decodedText, decodedResult) {
-    // Mengambil 4 digit angka terakhir dari teks/link QR Code
-    const cleanedText = decodedText.trim();
-    const last4Digits = cleanedText.slice(-4);
+        function onScanSuccess(decodedText, decodedResult) {
+            const cleanedText = decodedText.trim();
+            const last4Digits = cleanedText.slice(-4);
 
-    if (last4Digits && last4Digits.length === 4) {
-        document.getElementById('kode-input').value = last4Digits;
-        
-        // 1. LANGSUNG MATIKAN KAMERA DULUAN AGAR TIDAK SCAN ULANG DI BACKGROUND!
-        if (isScanning) {
-            toggleScanner();
+            if (last4Digits && last4Digits.length === 4) {
+                document.getElementById('kode-input').value = last4Digits;
+                
+                if (isScanning) {
+                    toggleScanner();
+                }
+
+                if (navigator.vibrate) navigator.vibrate(100);
+                prosesCekTiket();
+            } else {
+                tampilkanModal("TIDAK VALID ⚠️", "Format QR Code tidak dikenali!", "REGULER", "Kode tidak mengandung 4 digit angka.", "#f5af19", "#f5af19");
+            }
         }
-
-        // Berikan getaran pendek di HP jika didukung
-        if (navigator.vibrate) navigator.vibrate(100);
-
-        // 2. BARU PROSES CEK TIKET KE DATABASE
-        prosesCekTiket();
-    } else {
-        tampilkanModal("TIDAK VALID ⚠️", "Format QR Code tidak dikenali!", "Kode tidak mengandung 4 digit angka.", "#f5af19", "#f5af19");
-    }
-}
 
         async function prosesCekTiket() {
             const kode = document.getElementById('kode-input').value.trim();
             if (kode.length !== 4) {
-                tampilkanModal("PERHATIAN", "Masukkan tepat 4 digit angka terakhir kode tiket!", "Format tidak lengkap", "#f5af19", "#f5af19");
+                tampilkanModal("PERHATIAN", "Masukkan tepat 4 digit angka terakhir kode tiket!", "REGULER", "Format tidak lengkap", "#f5af19", "#f5af19");
                 return;
             }
 
@@ -384,29 +388,31 @@ function onScanSuccess(decodedText, decodedResult) {
                 });
                 const res = await response.json();
 
+                const tierName = res.data && res.data.tipeTiket ? res.data.tipeTiket.toUpperCase() : "REGULER";
+
                 if (res.result === "success") {
-                    // BERHASIL (Warna Biru)
                     tampilkanModal(
                         "BERHASIL ✅", 
                         res.message, 
+                        tierName,
                         `Penonton: ${res.data.nama} (${res.data.kodeTiket})`, 
                         "#00d2ff", 
                         "#00d2ff"
                     );
                 } else if (res.result === "already_used") {
-                    // SUDAH TERPAKAI (Warna Merah)
                     tampilkanModal(
                         "GAGAL ❌", 
                         res.message, 
+                        tierName,
                         `Tiket atas nama "${res.data.nama}" sudah pernah digunakan sebelumnya!`, 
                         "#ff4b2b", 
                         "#ff4b2b"
                     );
                 } else {
-                    // TIDAK VALID / TIDAK ADA (Warna Kuning)
                     tampilkanModal(
                         "TIDAK VALID ⚠️", 
                         res.message, 
+                        "REGULER",
                         "Pastikan 4 digit angka yang dimasukkan benar.", 
                         "#f5af19", 
                         "#f5af19"
@@ -415,7 +421,7 @@ function onScanSuccess(decodedText, decodedResult) {
 
             } catch (error) {
                 console.error("Error:", error);
-                tampilkanModal("ERROR 🚨", "Terjadi kesalahan koneksi ke server.", "Coba beberapa saat lagi.", "#ff4b2b", "#ff4b2b");
+                tampilkanModal("ERROR 🚨", "Terjadi kesalahan koneksi ke server.", "REGULER", "Coba beberapa saat lagi.", "#ff4b2b", "#ff4b2b");
             } finally {
                 btn.innerText = "Verifikasi Tiket";
                 btn.disabled = false;
@@ -423,11 +429,12 @@ function onScanSuccess(decodedText, decodedResult) {
             }
         }
 
-        function tampilkanModal(title, message, subtext, titleColor, borderColor) {
+        function tampilkanModal(title, message, tier, subtext, titleColor, borderColor) {
             const modal = document.getElementById('popup-modal');
             const box = document.getElementById('modal-box-border');
             const elTitle = document.getElementById('modal-title');
             const elMsg = document.getElementById('modal-message');
+            const elTier = document.getElementById('modal-tier');
             const elSub = document.getElementById('modal-subtext');
 
             elTitle.innerText = title;
@@ -435,6 +442,23 @@ function onScanSuccess(decodedText, decodedResult) {
             
             elMsg.innerText = message;
             elMsg.style.color = titleColor;
+
+            elTier.innerText = tier;
+            
+            // Beri warna border/badge tier sesuai kategori
+            if (tier === 'VIP') {
+                elTier.style.color = '#f5af19';
+                elTier.style.borderColor = '#f5af19';
+                elTier.style.background = 'rgba(245, 175, 25, 0.15)';
+            } else if (tier === 'SEAT') {
+                elTier.style.color = '#3b82f6';
+                elTier.style.borderColor = '#3b82f6';
+                elTier.style.background = 'rgba(59, 130, 246, 0.15)';
+            } else {
+                elTier.style.color = '#00d2ff';
+                elTier.style.borderColor = '#00d2ff';
+                elTier.style.background = 'rgba(0, 210, 255, 0.15)';
+            }
 
             elSub.innerText = subtext;
             box.style.borderColor = borderColor;
