@@ -118,6 +118,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   text-align: center; overflow: hidden;
   background: #08111d url("foto/bg2.jpg") center 36% / cover no-repeat;
 }
+.hero-backdrop {
+  display: none;
+}
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background:
