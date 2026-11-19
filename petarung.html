@@ -1,859 +1,160 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Petarung | Ragnarok Fight Club (RFC)</title>
-    <!-- Google Fonts: Cinzel & Rajdhani -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        /* --- MENDAFTARKAN FONT LOKAL GODOFWAR --- */
-        @font-face {
-            font-family: 'GodOfWar';
-            src: url('fonts/GODOFWAR.TTF') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-        body {
-            background-color: #030712;
-            color: #e2e8f0;
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            padding-top: 100px;
-        }
-
-        /* NAVBAR / NAVIGASI ATAS */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            background: rgba(3, 7, 18, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
-            z-index: 1000;
-        }
-
-        .nav-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #ffffff;
-            letter-spacing: 2px;
-            text-decoration: none;
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
-        }
-
-        .nav-logo span {
-            color: #00d2ff;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: #00d2ff;
-            text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
-        }
-
-        .nav-cta {
-            background: linear-gradient(135deg, #f5af19, #f12711);
-            color: white !important;
-            padding: 8px 20px;
-            border-radius: 2px;
-            box-shadow: 0 0 10px rgba(245, 175, 25, 0.4);
-            display: inline-block;
-        }
-
-        .nav-cta:hover {
-            box-shadow: 0 0 15px rgba(245, 175, 25, 0.8);
-        }
-
-        /* PAGE HEADER */
-        .page-header {
-            text-align: center;
-            padding: 60px 20px 40px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .page-title {
-            font-family: 'GodOfWar', serif;
-            font-size: 3.5rem;
-            color: #ffffff;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
-        }
-
-        .page-desc {
-            color: #94a3b8;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* MAIN CONTAINER */
-        .fighters-container {
-            max-width: 1250px;
-            margin: 0 auto;
-            padding: 20px 20px 100px 20px;
-        }
-
-        .division-section {
-            background: linear-gradient(180deg, rgba(3, 7, 18, 0.6) 0%, rgba(11, 19, 41, 0.85) 50%, rgba(3, 7, 18, 0.6) 100%);
-            border: 2px solid rgba(245, 175, 25, 0.3);
-            border-radius: 12px;
-            padding: 50px 30px;
-            margin-bottom: 70px;
-            position: relative;
-        }
-
-        .division-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .division-name {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            color: #f5af19;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(245, 175, 25, 0.6);
-            border-bottom: 2px solid rgba(245, 175, 25, 0.4);
-            display: inline-block;
-            padding-bottom: 8px;
-        }
-
-        /* TOP 3 PODIUM GRID (DESKTOP) */
-        .top3-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 35px;
-            flex-wrap: wrap;
-            margin-bottom: 60px;
-            padding-top: 25px;
-        }
-
-        .card-rank-3 { order: 1; }
-        .card-champion { order: 2; }
-        .card-rank-2 { order: 3; }
-
-        /* CHAMPION CARD */
-        .card-champion {
-            background: linear-gradient(145deg, #162038, #070d1d);
-            border: 3px solid #f5af19;
-            border-radius: 10px;
-            width: 340px;
-            overflow: visible;
-            position: relative;
-            box-shadow: 0 0 45px rgba(245, 175, 25, 0.45);
-            transform: translateY(-15px);
-            transition: 0.3s;
-        }
-        .card-champion:hover {
-            transform: translateY(-22px);
-            box-shadow: 0 0 65px rgba(245, 175, 25, 0.8);
-        }
-        .badge-champion {
-            position: absolute;
-            top: -24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #f5af19, #f12711);
-            color: #ffffff;
-            font-family: 'Cinzel', serif;
-            font-size: 1rem;
-            font-weight: 900;
-            padding: 8px 24px;
-            border-radius: 30px;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(245, 175, 25, 0.9);
-            z-index: 20;
-            white-space: nowrap;
-            border: 2px solid #fff;
-        }
-
-        /* RANK 2 CARD */
-        .card-rank-2 {
-            background: linear-gradient(145deg, #0f172a, #0b1329);
-            border: 2px solid #00d2ff;
-            border-radius: 8px;
-            width: 300px;
-            overflow: visible;
-            position: relative;
-            box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
-            transition: 0.3s;
-        }
-        .card-rank-2:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 0 35px rgba(0, 210, 255, 0.5);
-        }
-        .badge-2 {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #0052D4, #00d2ff);
-            color: #ffffff;
-            font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            font-weight: 900;
-            padding: 6px 20px;
-            border-radius: 30px;
-            letter-spacing: 1.5px;
-            z-index: 20;
-            white-space: nowrap;
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.8);
-            border: 2px solid #fff;
-        }
-
-        /* RANK 3 CARD */
-        .card-rank-3 {
-            background: linear-gradient(145deg, #1c140c, #0a0704);
-            border: 2px solid #cd7f32;
-            border-radius: 8px;
-            width: 300px;
-            overflow: visible;
-            position: relative;
-            box-shadow: 0 0 25px rgba(205, 127, 50, 0.25);
-            transition: 0.3s;
-        }
-        .card-rank-3:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 0 35px rgba(205, 127, 50, 0.5);
-        }
-        .badge-3 {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #8b4513, #cd7f32);
-            color: #ffffff;
-            font-family: 'Cinzel', serif;
-            font-size: 0.9rem;
-            font-weight: 900;
-            padding: 6px 20px;
-            border-radius: 30px;
-            letter-spacing: 1.5px;
-            z-index: 20;
-            white-space: nowrap;
-            box-shadow: 0 0 15px rgba(205, 127, 50, 0.8);
-            border: 2px solid #fff;
-        }
-
-        .fighter-img-box {
-            height: 280px;
-            background: #000;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            margin-top: 15px;
-            overflow: hidden;
-        }
-        .card-champion .fighter-img-box {
-            height: 320px;
-        }
-        .fighter-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(15%) contrast(110%);
-        }
-
-        .fighter-info {
-            padding: 20px;
-            text-align: center;
-        }
-        .fighter-name {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-        .fighter-class {
-            display: inline-block;
-            background: rgba(0, 210, 255, 0.15);
-            color: #00d2ff;
-            padding: 4px 12px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: 1px solid rgba(0, 210, 255, 0.4);
-            margin-bottom: 10px;
-            border-radius: 2px;
-        }
-        .fighter-camp {
-            color: #cbd5e1;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        .fighter-record {
-            margin-top: 8px;
-            color: #f5af19;
-            font-size: 0.95rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-
-        /* --- LIST LAINNYA (RANK 4 KE BAWAH) --- */
-        .other-fighters-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            color: #94a3b8;
-            text-align: center;
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .fighters-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .fighter-list-card {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: 0.3s;
-        }
-        .fighter-list-card:hover {
-            border-color: #00d2ff;
-            background: rgba(15, 23, 42, 0.95);
-        }
-
-        .list-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #00d2ff;
-            flex-shrink: 0;
-        }
-        .list-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .list-details h4 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1rem;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-        .list-details p {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-        }
-        .list-details span {
-            color: #f5af19;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        /* --- KHUSUS TAMPILAN MOBILE (HP) --- */
-        @media (max-width: 768px) {
-            nav {
-                padding: 12px 15px;
-                flex-direction: column;
-                gap: 10px;
-                align-items: center;
-            }
-            .nav-logo {
-                font-size: 1.2rem;
-            }
-            .nav-links {
-                display: flex;
-                gap: 8px;
-                list-style: none;
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-                overflow-x: auto;
-                white-space: nowrap;
-                padding: 4px 0;
-            }
-            .nav-links::-webkit-scrollbar {
-                display: none;
-            }
-            .nav-links a {
-                font-size: 0.8rem;
-            }
-            .nav-cta {
-                padding: 4px 10px !important;
-                font-size: 0.8rem !important;
-            }
-
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            /* TOP 3 PODIUM MOBILE: SCROLL HORIZONTAL (RANK 3 - CHAMPION - RANK 2) */
-            .division-section {
-                padding: 30px 15px;
-                overflow: hidden;
-            }
-
-            .top3-grid {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-                align-items: center;
-                gap: 15px;
-                overflow-x: auto;
-                padding: 35px 15px 25px 15px; /* Ruang atas untuk badge/crown */
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory;
-                margin-bottom: 40px;
-            }
-            .top3-grid::-webkit-scrollbar {
-                display: none;
-            }
-
-            .card-rank-3 {
-                order: 1 !important;
-                min-width: 68vw;
-                max-width: 68vw;
-                transform: none !important;
-                scroll-snap-align: center;
-            }
-            .card-champion {
-                order: 2 !important;
-                min-width: 72vw;
-                max-width: 72vw;
-                transform: none !important;
-                scroll-snap-align: center;
-            }
-            .card-rank-2 {
-                order: 3 !important;
-                min-width: 68vw;
-                max-width: 68vw;
-                transform: none !important;
-                scroll-snap-align: center;
-            }
-
-            .card-champion .fighter-img-box {
-                height: 220px;
-            }
-            .card-rank-2 .fighter-img-box,
-            .card-rank-3 .fighter-img-box {
-                height: 190px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b12">
+  <meta name="description" content="Kenali para fighter Ragnarok Fight Club — profil, divisi, dan pencapaian para petarung RFC.">
+  <title>Fighters | RFC Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="petarung.css">
+  <script src="petarung.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Lewati ke konten</a>
 
-    <!-- NAVBAR -->
-    <nav>
-        <a href="index.html" class="nav-logo">RFC <span>ARENA</span></a>
-        <ul class="nav-links">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="jadwal-pertandingan.html">Jadwal</a></li>
-            <li><a href="petarung.html" class="active">Petarung</a></li>
-            <li><a href="beli-tiket.html" class="nav-cta">Beli Tiket</a></li>
-        </ul>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="RFC Arena, beranda"><span>RFC</span><b>ARENA</b></a>
+    <button class="menu-toggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="primary-nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="Navigasi utama">
+      <a href="index.html">Beranda</a>
+      <a href="jadwal-pertandingan.html">Jadwal</a>
+      <a class="is-active" href="petarung.html" aria-current="page">Petarung</a>
+      <a class="nav-ticket" href="beli-tiket.html">Beli Tiket <span aria-hidden="true">↗</span></a>
     </nav>
+  </header>
 
-    <!-- HEADER HALAMAN PETARUNG -->
-    <div class="page-header">
-        <h1 class="page-title">PETARUNG RFC</h1>
-        <p class="page-desc">Daftar Seluruh Gladiator dan Raja Divisi Arena Es & Baja</p>
+  <main id="main-content">
+    <section class="fighters-hero" aria-labelledby="hero-title">
+      <div class="hero-noise" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow"><span></span> RAGNAROK FIGHT CLUB · ATHLETE ROSTER</p>
+        <h1 id="hero-title">BUILT IN THE<br><em>ARENA.</em></h1>
+        <p class="hero-copy">Kenali para fighter di balik setiap pertarungan. Setiap nama punya cerita, setiap langkah punya arti.</p>
+        <a class="hero-link" href="#divisions">JELAJAHI FIGHTER <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-side-note" aria-hidden="true"><span>RFC</span><i>FIGHTER DIRECTORY / 2026</i></div>
+      <div class="hero-bottom-line" aria-hidden="true"><span>DISCIPLINE</span><b>COURAGE · RESPECT · FIGHT</b><span>01 — 03</span></div>
+    </section>
+
+    <section class="intro-strip" aria-label="Tentang roster fighter">
+      <div><span class="strip-index">01</span><p>THE PEOPLE<br><strong>BEHIND THE FIGHT</strong></p></div>
+      <p class="strip-description">Dari Boxing hingga Muay Thai, inilah para atlet yang membentuk semangat kompetisi RFC.</p>
+    </section>
+
+    <div class="division-nav-wrap" id="divisions">
+      <nav class="division-nav" aria-label="Pilih divisi">
+        <a class="division-tab is-active" href="#boxing">01 <span>Boxing</span></a>
+        <a class="division-tab" href="#kickboxing">02 <span>Kickboxing</span></a>
+        <a class="division-tab" href="#muay-thai">03 <span>Muay Thai</span></a>
+      </nav>
     </div>
 
-    <!-- KONTROL UTAMA DAFTAR DIVISI -->
-    <div class="fighters-container">
+    <div class="division-list">
+      <!-- BOXING DIVISION -->
+      <section class="division-section" id="boxing" aria-labelledby="boxing-title">
+        <header class="division-heading">
+          <div><p class="section-kicker">DISCIPLINE / 01</p><h2 id="boxing-title">BOXING <span>DIVISION</span></h2></div>
+          <p class="division-caption">THE SWEET SCIENCE<br><span>FOOTWORK · PRECISION · POWER</span></p>
+        </header>
+        <div class="division-rule"><span></span></div>
 
-        <!-- 1. DIVISI BOXING -->
-        <div class="division-section">
-            <div class="division-header">
-                <h2 class="division-name">🥊 Boxing Division</h2>
+        <div class="featured-grid">
+          <article class="fighter-feature champion-card">
+            <div class="feature-image">
+              <img src="foto/angtol.jpeg" alt="Angga, fighter Boxing RFC" loading="lazy">
+              <span class="image-index">RFC / BX-001</span>
+              <span class="champion-mark"><span>✦</span> DIVISION CHAMPION</span>
             </div>
-
-            <!-- Top 3 Podium -->
-            <div class="top3-grid" id="boxing-podium">
-                <!-- Rank 3 -->
-                <div class="card-rank-3">
-                    <div class="badge-3">🥉 RANK 3</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/fadel.jpeg" alt="Fighter" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">FADEL</h3>
-                        <span class="fighter-class">Welterweight</span>
-                        <p class="fighter-camp">Camp: Ekonomi</p>
-                        <p class="fighter-record">Rekor: 3-2 (1 KO)</p>
-                    </div>
-                </div>
-
-                <!-- Champion -->
-                <div class="card-champion">
-                    <div class="badge-champion">👑 CHAMPION</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/angtol.jpeg" alt="Champion" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">ANGGA</h3>
-                        <span class="fighter-class">Welterweight</span>
-                        <p class="fighter-camp">Camp: Hukum</p>
-                        <p class="fighter-record">Rekor: 5-0 (4 KO)</p>
-                    </div>
-                </div>
-
-                <!-- Rank 2 -->
-                <div class="card-rank-2">
-                    <div class="badge-2">🥈 RANK 2</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/fadel.jpeg" alt="Rank 2" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">BIMA</h3>
-                        <span class="fighter-class">Welterweight</span>
-                        <p class="fighter-camp">Camp: Teknik</p>
-                        <p class="fighter-record">Rekor: 4-1 (2 KO)</p>
-                    </div>
-                </div>
+            <div class="feature-content">
+              <div class="feature-topline"><span class="status-label"><i></i> DIVISION FEATURE</span><span class="feature-number">01 / 03</span></div>
+              <h3>ANGGA</h3>
+              <p class="fighter-subtitle">WELTERWEIGHT <span>·</span> CAMP HUKUM</p>
+              <div class="feature-stats">
+                <div><strong>5–0</strong><span>RECORD</span></div>
+                <div><strong>4</strong><span>KNOCKOUTS</span></div>
+                <div><strong>100%</strong><span>WIN RATE</span></div>
+              </div>
+              <p class="feature-note">A name to watch. Discipline, composure, and the will to compete.</p>
             </div>
-
-            <!-- List Petarung Lainnya (Rank 4+) -->
-            <h3 class="other-fighters-title">Gladiator Kontender Lainnya</h3>
-            <div class="fighters-list">
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>SATRIA</h4>
-                        <p>Camp: Kedokteran | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>SATRIA</h4>
-                        <p>Camp: Kedokteran | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>DONI</h4>
-                        <p>Camp: FISIP | <span>Rekor: 2-3</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>RIKI</h4>
-                        <p>Camp: Pertanian | <span>Rekor: 1-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>RIKI</h4>
-                        <p>Camp: Pertanian | <span>Rekor: 1-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>RIKI</h4>
-                        <p>Camp: Pertanian | <span>Rekor: 1-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>RIKI</h4>
-                        <p>Camp: Pertanian | <span>Rekor: 1-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>RIKI</h4>
-                        <p>Camp: Pertanian | <span>Rekor: 1-2</span></p>
-                    </div>
-                </div>
-            </div>
+          </article>
+          <div class="contender-column">
+            <p class="column-heading">DIVISION CONTENDERS <span>02 ATHLETES</span></p>
+            <article class="contender-card rank-silver">
+              <div class="contender-image"><img src="foto/fadel.jpeg" alt="Fadel, fighter Boxing RFC" loading="lazy"><span>02</span></div>
+              <div class="contender-info"><span class="rank-label">RANK 02</span><h3>BIMA</h3><p>WELTERWEIGHT <b>·</b> CAMP TEKNIK</p><div class="mini-record"><strong>4–1</strong><span>RECORD</span><strong>2 KO</strong></div></div>
+            </article>
+            <article class="contender-card rank-bronze">
+              <div class="contender-image"><img src="foto/fadel.jpeg" alt="Fadel, fighter Boxing RFC" loading="lazy"><span>03</span></div>
+              <div class="contender-info"><span class="rank-label">RANK 03</span><h3>FADEL</h3><p>WELTERWEIGHT <b>·</b> CAMP EKONOMI</p><div class="mini-record"><strong>3–2</strong><span>RECORD</span><strong>1 KO</strong></div></div>
+            </article>
+            <div class="division-note"><span>NOTE</span><p>Ranking dan status gelar ditampilkan sesuai data resmi yang ditetapkan RFC.</p></div>
+          </div>
         </div>
 
-        <!-- 2. DIVISI KICKBOXING -->
-        <div class="division-section">
-            <div class="division-header">
-                <h2 class="division-name">⚡ Kickboxing Division</h2>
-            </div>
-
-            <!-- Top 3 Podium -->
-            <div class="top3-grid" id="kickboxing-podium">
-                <!-- Rank 3 -->
-                <div class="card-rank-3">
-                    <div class="badge-3">🥉 RANK 3</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/akmalfighter.jpeg" alt="Fighter" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">ZIKRI</h3>
-                        <span class="fighter-class">Lightweight</span>
-                        <p class="fighter-camp">Camp: Teknik</p>
-                        <p class="fighter-record">Rekor: 3-1 (2 KO)</p>
-                    </div>
-                </div>
-
-                <!-- Champion -->
-                <div class="card-champion">
-                    <div class="badge-champion">👑 CHAMPION</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/fadel.jpeg" alt="Champion" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">FADEL</h3>
-                        <span class="fighter-class">Lightweight</span>
-                        <p class="fighter-camp">Camp: Ekonomi</p>
-                        <p class="fighter-record">Rekor: 6-0 (5 KO)</p>
-                    </div>
-                </div>
-
-                <!-- Rank 2 -->
-                <div class="card-rank-2">
-                    <div class="badge-2">🥈 RANK 2</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/akmalfighter.jpeg" alt="Rank 2" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">AKMAL</h3>
-                        <span class="fighter-class">Lightweight</span>
-                        <p class="fighter-camp">Camp: Hukum</p>
-                        <p class="fighter-record">Rekor: 4-2 (3 KO)</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- List Petarung Lainnya -->
-            <h3 class="other-fighters-title">Gladiator Kontender Lainnya</h3>
-            <div class="fighters-list">
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>BAYU</h4>
-                        <p>Camp: MIPA | <span>Rekor: 2-2</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>ARIF</h4>
-                        <p>Camp: Sastra | <span>Rekor: 1-3</span></p>
-                    </div>
-                </div>
-            </div>
+        <div class="roster-heading"><div><p class="section-kicker">THE FULL LINEUP</p><h3>MORE <span>FIGHTERS</span></h3></div><span class="roster-count">BOXING ROSTER</span></div>
+        <div class="roster-grid">
+          <article class="roster-card"><img src="foto/akmalfighter.jpeg" alt="Satria" loading="lazy"><div><span>BOXING</span><h4>SATRIA</h4><p>CAMP KEDOKTERAN <b>·</b> 2–2</p></div><span class="roster-arrow">↗</span></article>
+          <article class="roster-card"><img src="foto/fadel.jpeg" alt="Doni" loading="lazy"><div><span>BOXING</span><h4>DONI</h4><p>CAMP FISIP <b>·</b> 2–3</p></div><span class="roster-arrow">↗</span></article>
+          <article class="roster-card"><img src="foto/akmalfighter.jpeg" alt="Riki" loading="lazy"><div><span>BOXING</span><h4>RIKI</h4><p>CAMP PERTANIAN <b>·</b> 1–2</p></div><span class="roster-arrow">↗</span></article>
+          <article class="roster-card"><img src="foto/akmalfighter.jpeg" alt="Riki" loading="lazy"><div><span>BOXING</span><h4>RIKI</h4><p>CAMP PERTANIAN <b>·</b> 1–2</p></div><span class="roster-arrow">↗</span></article>
         </div>
+      </section>
 
-        <!-- 3. DIVISI MUAY THAI -->
-        <div class="division-section">
-            <div class="division-header">
-                <h2 class="division-name">🔥 Muay Thai Division</h2>
-            </div>
-
-            <!-- Top 3 Podium -->
-            <div class="top3-grid" id="muaythai-podium">
-                <!-- Rank 3 -->
-                <div class="card-rank-3">
-                    <div class="badge-3">🥉 RANK 3</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/akmalfighter.jpeg" alt="Fighter" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">YUSUF</h3>
-                        <span class="fighter-class">Featherweight</span>
-                        <p class="fighter-camp">Camp: Vokasi</p>
-                        <p class="fighter-record">Rekor: 3-1 (1 KO)</p>
-                    </div>
-                </div>
-
-                <!-- Champion -->
-                <div class="card-champion">
-                    <div class="badge-champion">👑 CHAMPION</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/angtol.jpeg" alt="Champion" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">ANGGA</h3>
-                        <span class="fighter-class">Featherweight</span>
-                        <p class="fighter-camp">Camp: Psikologi</p>
-                        <p class="fighter-record">Rekor: 5-0 (3 KO)</p>
-                    </div>
-                </div>
-
-                <!-- Rank 2 -->
-                <div class="card-rank-2">
-                    <div class="badge-2">🥈 RANK 2</div>
-                    <div class="fighter-img-box">
-                        <img src="foto/akmalfighter.jpeg" alt="Rank 2" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="fighter-info">
-                        <h3 class="fighter-name">RAKHA</h3>
-                        <span class="fighter-class">Featherweight</span>
-                        <p class="fighter-camp">Camp: Teknik</p>
-                        <p class="fighter-record">Rekor: 4-1 (2 KO)</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- List Petarung Lainnya -->
-            <h3 class="other-fighters-title">Gladiator Kontender Lainnya</h3>
-            <div class="fighters-list">
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/fadel.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>FAHMI</h4>
-                        <p>Camp: Hukum | <span>Rekor: 2-1</span></p>
-                    </div>
-                </div>
-                <div class="fighter-list-card">
-                    <div class="list-avatar"><img src="foto/akmalfighter.jpeg" alt="" onerror="this.src='https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=200&q=80'"></div>
-                    <div class="list-details">
-                        <h4>DANDI</h4>
-                        <p>Camp: Ekonomi | <span>Rekor: 1-2</span></p>
-                    </div>
-                </div>
-            </div>
+      <!-- KICKBOXING DIVISION -->
+      <section class="division-section" id="kickboxing" aria-labelledby="kickboxing-title">
+        <header class="division-heading">
+          <div><p class="section-kicker">DISCIPLINE / 02</p><h2 id="kickboxing-title">KICKBOXING <span>DIVISION</span></h2></div>
+          <p class="division-caption">STRIKE WITHOUT HESITATION<br><span>RHYTHM · SPEED · IMPACT</span></p>
+        </header>
+        <div class="division-rule"><span></span></div>
+        <div class="featured-grid">
+          <article class="fighter-feature champion-card">
+            <div class="feature-image"><img src="foto/fadel.jpeg" alt="Fadel, fighter Kickboxing RFC" loading="lazy"><span class="image-index">RFC / KB-001</span><span class="champion-mark"><span>✦</span> DIVISION CHAMPION</span></div>
+            <div class="feature-content"><div class="feature-topline"><span class="status-label"><i></i> DIVISION FEATURE</span><span class="feature-number">01 / 03</span></div><h3>FADEL</h3><p class="fighter-subtitle">LIGHTWEIGHT <span>·</span> CAMP EKONOMI</p><div class="feature-stats"><div><strong>6–0</strong><span>RECORD</span></div><div><strong>5</strong><span>KNOCKOUTS</span></div><div><strong>100%</strong><span>WIN RATE</span></div></div><p class="feature-note">A name to watch. Discipline, composure, and the will to compete.</p></div>
+          </article>
+          <div class="contender-column"><p class="column-heading">DIVISION CONTENDERS <span>02 ATHLETES</span></p>
+            <article class="contender-card rank-silver"><div class="contender-image"><img src="foto/akmalfighter.jpeg" alt="Akmal, fighter Kickboxing RFC" loading="lazy"><span>02</span></div><div class="contender-info"><span class="rank-label">RANK 02</span><h3>AKMAL</h3><p>LIGHTWEIGHT <b>·</b> CAMP HUKUM</p><div class="mini-record"><strong>4–2</strong><span>RECORD</span><strong>3 KO</strong></div></div></article>
+            <article class="contender-card rank-bronze"><div class="contender-image"><img src="foto/akmalfighter.jpeg" alt="Zikri, fighter Kickboxing RFC" loading="lazy"><span>03</span></div><div class="contender-info"><span class="rank-label">RANK 03</span><h3>ZIKRI</h3><p>LIGHTWEIGHT <b>·</b> CAMP TEKNIK</p><div class="mini-record"><strong>3–1</strong><span>RECORD</span><strong>2 KO</strong></div></div></article>
+            <div class="division-note"><span>NOTE</span><p>Ranking dan status gelar ditampilkan sesuai data resmi yang ditetapkan RFC.</p></div>
+          </div>
         </div>
+        <div class="roster-heading"><div><p class="section-kicker">THE FULL LINEUP</p><h3>MORE <span>FIGHTERS</span></h3></div><span class="roster-count">KICKBOXING ROSTER</span></div>
+        <div class="roster-grid">
+          <article class="roster-card"><img src="foto/fadel.jpeg" alt="Bayu" loading="lazy"><div><span>KICKBOXING</span><h4>BAYU</h4><p>CAMP MIPA <b>·</b> 2–2</p></div><span class="roster-arrow">↗</span></article>
+          <article class="roster-card"><img src="foto/fadel.jpeg" alt="Bayu" loading="lazy"><div><span>KICKBOXING</span><h4>BAYU</h4><p>CAMP MIPA <b>·</b> 2–2</p></div><span class="roster-arrow">↗</span></article>
+          <article class="roster-card"><img src="foto/fadel.jpeg" alt="Bayu" loading="lazy"><div><span>KICKBOXING</span><h4>BAYU</h4><p>CAMP MIPA <b>·</b> 2–2</p></div><span class="roster-arrow">↗</span></article>
+          <article class="roster-card"><img src="foto/akmalfighter.jpeg" alt="Arif" loading="lazy"><div><span>KICKBOXING</span><h4>ARIF</h4><p>CAMP SASTRA <b>·</b> 1–3</p></div><span class="roster-arrow">↗</span></article>
+        </div>
+      </section>
 
+      <!-- MUAY THAI DIVISION -->
+      <section class="division-section" id="muay-thai" aria-labelledby="muay-title">
+        <header class="division-heading">
+          <div><p class="section-kicker">DISCIPLINE / 03</p><h2 id="muay-title">MUAY THAI <span>DIVISION</span></h2></div>
+          <p class="division-caption">THE ART OF EIGHT LIMBS<br><span>TECHNIQUE · BALANCE · GRIT</span></p>
+        </header>
+        <div class="division-rule"><span></span></div>
+        <div class="featured-grid">
+          <article class="fighter-feature champion-card"><div class="feature-image"><img src="foto/angtol.jpeg" alt="Angga, fighter Muay Thai RFC" loading="lazy"><span class="image-index">RFC / MT-001</span><span class="champion-mark"><span>✦</span> DIVISION CHAMPION</span></div><div class="feature-content"><div class="feature-topline"><span class="status-label"><i></i> DIVISION FEATURE</span><span class="feature-number">01 / 03</span></div><h3>ANGGA</h3><p class="fighter-subtitle">FEATHERWEIGHT <span>·</span> CAMP HUKUM</p><div class="feature-stats"><div><strong>5–0</strong><span>RECORD</span></div><div><strong>4</strong><span>KNOCKOUTS</span></div><div><strong>100%</strong><span>WIN RATE</span></div></div><p class="feature-note">A name to watch. Discipline, composure, and the will to compete.</p></div></article>
+          <div class="contender-column"><p class="column-heading">DIVISION CONTENDERS <span>02 ATHLETES</span></p>
+            <article class="contender-card rank-silver"><div class="contender-image"><img src="foto/akmalfighter.jpeg" alt="Rakha, fighter Muay Thai RFC" loading="lazy"><span>02</span></div><div class="contender-info"><span class="rank-label">RANK 02</span><h3>RAKHA</h3><p>FEATHERWEIGHT <b>·</b> CAMP TEKNIK</p><div class="mini-record"><strong>4–1</strong><span>RECORD</span><strong>2 KO</strong></div></div></article>
+            <article class="contender-card rank-bronze"><div class="contender-image"><img src="foto/akmalfighter.jpeg" alt="Yusuf, fighter Muay Thai RFC" loading="lazy"><span>03</span></div><div class="contender-info"><span class="rank-label">RANK 03</span><h3>YUSUF</h3><p>FEATHERWEIGHT <b>·</b> CAMP VOKASI</p><div class="mini-record"><strong>3–1</strong><span>RECORD</span><strong>1 KO</strong></div></div></article>
+            <div class="division-note"><span>NOTE</span><p>Ranking dan status gelar ditampilkan sesuai data resmi yang ditetapkan RFC.</p></div>
+          </div>
+        </div>
+        <div class="roster-heading"><div><p class="section-kicker">THE FULL LINEUP</p><h3>MORE <span>FIGHTERS</span></h3></div><span class="roster-count">MUAY THAI ROSTER</span></div>
+        <div class="roster-empty"><span>ROSTER UPDATE</span><p>Fighter lainnya akan ditampilkan di sini.</p></div>
+      </section>
     </div>
 
-    <!-- SCRIPT OTOMATIS FOKUS KE CHAMPION DI TAMPILAN HP -->
-    <script>
-        window.addEventListener('load', function() {
-            if (window.innerWidth <= 768) {
-                const champions = document.querySelectorAll('.card-champion');
-                champions.forEach(champ => {
-                    champ.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
-                });
-            }
-        });
-    </script>
+    <section class="closing-banner"><p class="section-kicker">RAGNAROK FIGHT CLUB</p><h2>EVERY FIGHTER<br><em>HAS A STORY.</em></h2><p>Respect the journey. Honor the fight.</p><a href="jadwal-pertandingan.html">LIHAT PERTANDINGAN <span>↗</span></a></section>
+  </main>
+
+  <footer class="site-footer"><a class="brand" href="index.html"><span>RFC</span><b>ARENA</b></a><p>COURAGE · RESPECT · FIGHT</p><span>© <span id="current-year">2026</span> RAGNAROK FIGHT CLUB</span></footer>
 </body>
 </html>
