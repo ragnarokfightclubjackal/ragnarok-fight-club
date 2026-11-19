@@ -1047,3 +1047,174 @@ img {
     animation: none!important
   }
 }
+
+/* =========================================================
+   DESKTOP TYPOGRAPHY REFINEMENT
+   Dibuat agar label dan informasi tetap terbaca di desktop.
+   Tidak mengubah komposisi layout maupun tampilan mobile.
+   ========================================================= */
+@media (min-width: 681px) {
+  .eyebrow,
+  .section-kicker {
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  .hero-copy {
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .hero-link {
+    font-size: 15px;
+  }
+
+  .hero-side-note i {
+    font-size: 11px;
+  }
+
+  .hero-bottom-line {
+    font-size: 12px;
+  }
+
+  .intro-strip > div p {
+    font-size: 15px;
+  }
+
+  .strip-description {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .division-tab {
+    font-size: 14px;
+  }
+
+  .division-heading h2 {
+    font-size: clamp(44px, 4.4vw, 68px);
+  }
+
+  .division-caption {
+    font-size: 14px;
+  }
+
+  .division-caption span {
+    font-size: 11px;
+  }
+
+  .image-index {
+    font-size: 12px;
+  }
+
+  .champion-mark {
+    font-size: 12px;
+  }
+
+  .status-label,
+  .feature-number {
+    font-size: 11px;
+  }
+
+  .feature-content h3 {
+    font-size: clamp(52px, 5.3vw, 82px);
+  }
+
+  .fighter-subtitle {
+    font-size: 14px;
+  }
+
+  .feature-stats strong {
+    font-size: 30px;
+  }
+
+  .feature-stats span {
+    font-size: 11px;
+  }
+
+  .feature-note {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .column-heading {
+    font-size: 13px;
+  }
+
+  .column-heading span {
+    font-size: 11px;
+  }
+
+  .rank-label {
+    font-size: 11px;
+  }
+
+  .contender-info h3 {
+    font-size: 34px;
+  }
+
+  .contender-info > p {
+    font-size: 11px;
+  }
+
+  .mini-record strong {
+    font-size: 18px;
+  }
+
+  .mini-record span {
+    font-size: 10px;
+  }
+
+  .mini-record strong:last-child {
+    font-size: 14px;
+  }
+
+  .division-note span {
+    font-size: 11px;
+  }
+
+  .division-note p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .roster-heading h3 {
+    font-size: 36px;
+  }
+
+  .roster-count {
+    font-size: 11px;
+  }
+
+  .roster-card > div > span {
+    font-size: 10px;
+  }
+
+  .roster-card h4 {
+    font-size: 23px;
+  }
+
+  .roster-card p {
+    font-size: 10px;
+  }
+
+  .roster-empty span {
+    font-size: 12px;
+  }
+
+  .roster-empty p {
+    font-size: 14px;
+  }
+
+  .closing-banner > p:not(.section-kicker) {
+    font-size: 15px;
+  }
+
+  .closing-banner > a {
+    font-size: 13px;
+  }
+
+  .site-footer p,
+  .site-footer > span {
+    font-size: 11px;
+  }
+}
